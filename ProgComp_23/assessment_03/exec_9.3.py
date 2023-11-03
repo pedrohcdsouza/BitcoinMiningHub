@@ -10,34 +10,29 @@ print("[U north] [D south] [R east] [L west] \n[O northwest] [N northeast] [E so
 moves = str(input("Now write the MOVES: \n")).upper()
 
 for j in moves:
+    if j not in 'UDRLONEW': continue
     if j == "U":
         position_y += 1
-        valid_moves += "U"
-    if j == "D":
+    elif j == "D":
         position_y -= 1
-        valid_moves += "D"
-    if j == "R":
+    elif j == "R":
         position_x += 1
-        valid_moves += "R"
-    if j == "L":
+    elif j == "L":
         position_x -= 1
-        valid_moves += "L"
-    if j == "O":
+    elif j == "O":
         position_y += 1
         position_x -= 1
-        valid_moves += "O"
-    if j == "N":
+    elif j == "N":
         position_y += 1
         position_x += 1
-        valid_moves += "N"
-    if j == "E":
+    elif j == "E":
         position_y -= 1
         position_x += 1
-        valid_moves += "E"
-    if j == "W":
+    else:
         position_y -= 1
         position_x -= 1
-        valid_moves += "W"
+    valid_moves += j
+
 
 print(f"Your initial position was: ({initial_x},{initial_y})")
 print(f"Your final position was: ({position_x},{position_y})")

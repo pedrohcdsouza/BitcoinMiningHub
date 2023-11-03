@@ -1,8 +1,13 @@
 #pedrohcdsouza arquive
 
-var = str(input("Write something: "))
-pos = 0
+frase = str(input("escreva alguma coisa")
+pos == 1
+j == 0
 
-while pos != len(var):
-    print(var[0,pos])
-    pos += 1
+while True:
+    if j == len(frase):
+        break
+    else:
+        print(frase[0:j])
+        j ==+1 
+
