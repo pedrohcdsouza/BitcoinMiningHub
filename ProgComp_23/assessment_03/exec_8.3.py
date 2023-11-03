@@ -11,7 +11,9 @@ for j in phrase.lower():
     if j == letter.lower():
         count += 1
         position += f"{a};"
-
-print(f'The letter {letter.upper()} was repeated {count} times in the phrase "{phrase}"\nin the positions: {position}')
+if letter in phrase.lower():
+    print(f'The letter {letter.upper()} was repeated {count} times in the phrase "{phrase}"\nin the positions: {position}')
+else:
+    print(f"The letter {letter.upper()} isn't on the Phrase.")
 
 #OBS: A questão explícitava que a posição 1 deveria ser representado por 1 e não 0.

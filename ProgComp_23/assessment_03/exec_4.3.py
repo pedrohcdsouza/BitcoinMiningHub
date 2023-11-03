@@ -1,13 +1,10 @@
 #pedrohcdsouza arquive
 
-frase = str(input("escreva alguma coisa")
-pos == 1
-j == 0
+var = str(input("Write something: "))
 
-while True:
-    if j == len(frase):
-        break
-    else:
-        print(frase[0:j])
-        j ==+1 
+posicao = 1
 
+while posicao <= len(var):
+    print(var[0:posicao])
+    posicao += 1
+    
