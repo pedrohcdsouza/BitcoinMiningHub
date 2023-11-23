@@ -5,8 +5,7 @@ no 3º quartil (entre 50 e 74) e no 4º quartil (entre 75 e 99).'''
 
 #pedrohcdsouza arquive
 
-from random import *
-from re import X
+import random
 
 n = int(input("LIST Create\nWrite the range of your list: "))
 listn = list()
