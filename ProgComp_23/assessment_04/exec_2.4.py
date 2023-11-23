@@ -9,14 +9,13 @@ import random
 
 n = int(input("LIST Create\nWrite the range of your list: "))
 listn = list()
-x = random(0,99)
 
 if n < 0:
     print("Write a valid number!")
 else:
     a = 0
     while a < n:
-        listn.append(x)
+        listn.append(random.randint(0,99))
         a += 1
     print(listn)
 
