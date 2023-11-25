@@ -9,6 +9,10 @@ import random
 
 n = int(input("LIST Create\nWrite the range of your list: "))
 listn = list()
+firstq = list()
+secondq = list()
+thirstq = list()
+fourq = list()
 
 if n < 0:
     print("Write a valid number!")
@@ -17,5 +21,18 @@ else:
     while a < n:
         listn.append(random.randint(0,99))
         a += 1
-    print(listn)
+    for i in listn:
+        if i >= 0 and i <= 24:
+            firstq.append(i)
+        elif i >= 25 and i <= 45:
+            secondq.append(i)
+        elif i >= 50 and i <= 74:
+            thirstq.append(i)
+        else:
+            fourq.append(i)
+    print(f"primeira lista {firstq}") 
+    print(f"segunda lista {secondq}")
+    print(f"terceira lista {thirstq}")
+    print(f"quarta lista {fourq}")         
+
 
