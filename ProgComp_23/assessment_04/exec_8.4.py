@@ -8,12 +8,19 @@ A matriz transposta de uma matriz M com m linhas e n colunas é obtida trocando 
 
 import random
 
-coluna_range = int(input("MATRIZ\nWrite your matriz: "))
-linha_range = int(input("Write the linha: "))
+columns_range = int(input("MATRIZ\nWrite the column range:  ")) #coluna
+rows_range = int(input("Now, write the row range:  ")) #linha
 
-coluna = [random.randint(0,9) for _ in range(coluna_range)]
-linha = [random.randint(0,9) for _ in range (linha_range)]
+if columns_range <= 0 or rows_range <= 0:
+    print("Write valid number!")
+else:
+    matrix = [[random.randint(0,9) for _ in range(columns_range)] for _ in range (rows_range)] #matriz
+    matrix_transpose = [list(i) for i in zip(*matrix)]
 
-print(coluna)
-print(linha)
+    print("MATRIX LIST:")
+    for i in matrix:
+        print(i)
+    print("MATRIX TRANPOSE LIST:")
+    for i in matrix_transpose:
+        print(i)
 
