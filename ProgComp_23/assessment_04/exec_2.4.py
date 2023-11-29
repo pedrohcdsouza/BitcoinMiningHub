@@ -8,11 +8,11 @@ no 3º quartil (entre 50 e 74) e no 4º quartil (entre 75 e 99).'''
 import random
 
 n = int(input("LIST Create\nWrite the range of your list: "))
-listn = list()
-firstq = list()
-secondq = list()
-thirstq = list()
-fourq = list()
+listn = []
+q1 = []
+q2 = []
+q3 = []
+q4 = []
 
 if n < 0:
     print("Write a valid number!")
@@ -23,16 +23,16 @@ else:
         a += 1
     for i in listn:
         if i >= 0 and i <= 24:
-            firstq.append(i)
+            q1.append(i)
         elif i >= 25 and i <= 45:
-            secondq.append(i)
+            q2.append(i)
         elif i >= 50 and i <= 74:
-            thirstq.append(i)
+            q3.append(i)
         else:
-            fourq.append(i)
-    print(f"primeira lista {firstq}") 
-    print(f"segunda lista {secondq}")
-    print(f"terceira lista {thirstq}")
-    print(f"quarta lista {fourq}")         
+            q4.append(i)
+    print(f"\nFirst quartile: {sorted(q1)}\n") 
+    print(f"Second quartile: {sorted(q2)}\n")
+    print(f"Thirst quartile: {sorted(q3)}\n")
+    print(f"Four quartile: {sorted(q4)}\n")         
 
 

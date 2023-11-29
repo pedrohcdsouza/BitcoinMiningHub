@@ -11,26 +11,28 @@ informar se ele consta na lista, quantas ocorrências dele há na lista e quais 
 import random
 
 n = int(input("LIST Create\nWrite the number: "))
-listn = list()
+listn = [] #list with "n" random number
+pos = []
 count = 0
-pos = list()
+pos_n = 0
 
 if n < 0:
     print("Write a valid number!")
 else:
     a = 0
     while a < n:
-        listn.append(random.randint(0,999))
+        listn.append(random.randint(0,999)) 
         a += 1
     verificator = int(input("Write a verificator number: "))
     if verificator not in listn:
-        print("Verificador não está!")
+        print("Verificator not in!")
     else:
         for i in listn:
+            pos_n += 1
             if i == verificator:
                 count += 1
-                pos.append(i)
-        print(f"O verificador {verificator} apareceu {count} vezes nas posições {pos}")
+                pos.append(pos_n)
+        print(f"The verifier {verificator} has appeared {count} times in {pos} positions")
                 
 
 
