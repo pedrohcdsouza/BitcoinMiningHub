@@ -12,6 +12,21 @@ import random
 
 n = int(input("LIST Create\nWrite the range: "))
 
-listn = [random.randint(0, 99) for _ in range(n)]
-listo = listn
+if n <= 0:
+    print("Write a valid number!")
+else:
+    listn = [random.randint(0, 99) for _ in range(n)] # OBS para depois: conseguir fazer uma váriavel receber listn sem modificar listn
+    print(f"Original list: {listn}")
+    for i in range(n):
+        for j in range(n-1):
+            if listn[j] > listn[j+1]:
+                listn[j], listn[j+1] = listn[j+1], listn[j]
+    print(f"Sorted list: {listn}")
+
+
+                
+                
+                
+
+
 
