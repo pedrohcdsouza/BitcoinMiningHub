@@ -11,7 +11,6 @@ informar se ele consta na lista, quantas ocorrências dele há na lista e quais 
 import random
 
 n = int(input("LIST Create\nWrite the number: "))
-listn = [] #list with "n" random number
 pos = []
 count = 0
 pos_n = 0
@@ -19,11 +18,10 @@ pos_n = 0
 if n < 0:
     print("Write a valid number!")
 else:
-    a = 0
-    while a < n:
-        listn.append(random.randint(0,999)) 
-        a += 1
+    listn = [random.randint(0,999) for _ in range(n)]
+
     verificator = int(input("Write a verificator number: "))
+
     if verificator not in listn:
         print("Verificator not in!")
     else:

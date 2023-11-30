@@ -10,7 +10,6 @@ Montar uma segunda lista onde cada posição deverá ser uma sub-lista. A primei
 e a segunda posição deverá ser a média das cotações de venda do respectivo mês.
 '''
 
-
 #pedrohcdsouza arquive
 
 monthly_max = [] #month,max,data
@@ -79,3 +78,8 @@ for i in monthly_max:
 print(f"\nAVARAGE DOLLAR VALUE PER MONTH\n")
 for i in monthly_avarage:
     print(i)
+
+
+
+        
+
