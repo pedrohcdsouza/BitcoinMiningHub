@@ -5,32 +5,32 @@ A lista só deverá armazenar os x menores números informados,
 seguindo a lógica abaixo:
 '''
 
-#pedrohcdsouza arquive
+#pedrohcdsouza
 
-n = int(input("Enter the number of elements in the list: ")) #Range of the list
+n = int(input("Enter the number of elements in the list: ")) # Range of the list
 listn = []
 
 if n <= 0:
     print("Value not valid!")
 else:
     while True:
+        listn.sort()
         x = int(input("Enter a value: "))
         
         if x == 0:
             print("\nSystem over!\n")
             break
 
-        elif len(listn) < n: #Checking if the list is shorter than the value entered
-
+        elif len(listn) < n:
             listn.append(x)
 
-        elif x < listn[n-1]: #Replace the value if it is smaller than the largest one
-            sorted(listn)
-            listn[n-1] = x
+        elif n == len(listn): 
+            if x < listn[-1]:
+                listn[-1] = x
             
         print(listn)
 
-    print(f"Your list was: {listn}")
+    print(f"Your list is: {listn}")
 
 
     

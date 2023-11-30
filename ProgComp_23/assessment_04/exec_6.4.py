@@ -13,9 +13,5 @@ import random
 n = int(input("LIST Create\nWrite the range: "))
 
 listn = [random.randint(0, 99) for _ in range(n)]
-#print(listn)
-listninverse = []
-
-while 
-
+listo = listn
 
