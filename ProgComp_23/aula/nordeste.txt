@@ -1,0 +1,10 @@
+Maceió/AL:1018948
+Salvador/BA:2872347
+Fortaleza/CE:2669342
+São Luís/MA:1101884
+João Pessoa/PB:809015
+Recife/PE:1695727
+Teresina/PI:868075
+Natal/RN:890480
+Aracaju/SE:657013
+Cidade mais populosa: ['BA', 'Salvador', 2872347]População total: 12582831
