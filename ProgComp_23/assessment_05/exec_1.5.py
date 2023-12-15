@@ -36,7 +36,7 @@ except:
 #
 print(dictCartola)
 # esquemastaticos = ('343','352','433','442','451','532','541')
-
+# OBSERVAÇÃO, COLOCAR TUDO DENTRO DE UM MESMO WHILE
 
 
 
