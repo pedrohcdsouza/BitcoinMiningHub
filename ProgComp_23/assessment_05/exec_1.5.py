@@ -21,7 +21,7 @@ while True:
 # ## Fazendo a leitura dos arquivos.
 try:
     if wanted_year == current_year:
-        dictCartola = requests.get(strURL, verify=False).json()
+        dictCartola = requests.get(strURL, verify=True).json()
     else:
         strNomeArq = strDiretorio + f'\\cartola_fc_{wanted_year}.json'
 
@@ -33,8 +33,8 @@ except FileNotFoundError:
 except:
     print(f"\nERROR: {sys.exc_info()[0]}")
     sys.exit()
-
 #
+print(dictCartola)
 # esquemastaticos = ('343','352','433','442','451','532','541')
 
 
