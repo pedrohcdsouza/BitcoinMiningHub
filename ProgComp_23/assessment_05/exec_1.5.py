@@ -1,4 +1,5 @@
 import requests, datetime, os, sys, json
+
 # ##
 strURL = 'https://api.cartolafc.globo.com/atletas/mercado'
 strDiretorio = os.path.abspath(__file__)
@@ -31,12 +32,24 @@ while True:
     except:
         print(f"\nERROR: {sys.exc_info()[0]}")
 #
+        
+# ## Escolhendo a escalação
+roster = ["343","352","433","442","451","532","541"]
+while True:
+    wanted_roster = str(input("Escolha uma escalação (0 para sair): ")).replace("-","").replace(".","").replace(" ","")
+    if wanted_roster == 0:
+        print("Saindo do programa!")
+        sys.exit()
+    elif wanted_roster not in roster:
+        print("Escalação desejada não é válida!")
+    else:
+        break
+#
 
 # ## Filtrando apenas os dados necessários
-dictAtletas = dict()
-for atleta in range(len(dictCartola['atletas'])):
-    dictAtletas[atleta] = dictCartola['atletas'][atleta]
+dictAtletas = { atleta: dictCartola['atletas'][atleta] for atleta in range(len(dictCartola['atletas']))}
 #
+
 
 
 
