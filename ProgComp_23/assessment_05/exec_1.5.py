@@ -47,10 +47,21 @@ while True:
 #
 
 # ## Filtrando apenas os dados necessários
-dictAtletas = { atleta: dictCartola['atletas'][atleta] for atleta in range(len(dictCartola['atletas']))}
+dictMelhores = sorted(dictCartola['atletas'], key=lambda x: x['media_num'] * x['jogos_num'], reverse=True)
+melhores_tecnicos = [x for x in dictMelhores if x['posicao_id'] == 6]
+melhores_atacantes = [x for x in dictMelhores if x['posicao_id'] == 5]
+melhores_meias = [x for x in dictMelhores if x['posicao_id'] == 4]
+melhores_zagueiros = [x for x in dictMelhores if x['posicao_id'] == 3]
+melhores_laterais = [x for x in dictMelhores if x['posicao_id'] == 2]
+melhores_goleiros = [x for x in dictMelhores if x['posicao_id'] == 1]
 #
 
-
+if wanted_roster == '343':
+    print(f"\nESCALAÇÃO CARTOLA FC no {wanted_roster}")
+    print(f"Goleiro: {melhores_goleiros[0]['nome']}, conhecido como: {melhores_goleiros[0]['apelido_abreviado']}\nJoga no: {dictCartola['clubes'][str(melhores_goleiros[0]['clube_id'])]['nome']}\npontuou: {float(melhores_goleiros[0]['media_num'] * melhores_goleiros[0]['jogos_num']):.2f}")
+    print(f"Zagueiro: {melhores_zagueiros[0]['nome']}, conhecido como: {melhores_zagueiros[0]['apelido_abreviado']}\nJoga no: {dictCartola['clubes'][str(melhores_zagueiros[0]['clube_id'])]['nome']}\npontuou: {float(melhores_zagueiros[0]['media_num'] * melhores_zagueiros[0]['jogos_num']):.2f}")
+    print(f"Zagueiro: {melhores_zagueiros[1]['nome']}, conhecido como: {melhores_zagueiros[1]['apelido_abreviado']}\nJoga no: {dictCartola['clubes'][str(melhores_zagueiros[1]['clube_id'])]['nome']}\npontuou: {float(melhores_zagueiros[1]['media_num'] * melhores_zagueiros[1]['jogos_num']):.2f}")
+    print(f"Zagueiro: {melhores_zagueiros[2]['nome']}, conhecido como: {melhores_zagueiros[2]['apelido_abreviado']}\nJoga no: {dictCartola['clubes'][str(melhores_zagueiros[2]['clube_id'])]['nome']}\npontuou: {float(melhores_zagueiros[2]['media_num'] * melhores_zagueiros[2]['jogos_num']):.2f}")
 
 
     
