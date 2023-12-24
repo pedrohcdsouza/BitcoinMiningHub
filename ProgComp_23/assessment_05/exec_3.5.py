@@ -14,11 +14,31 @@ with open(strDiretorio + '\\relacao_servidores_ifrn.csv','r',encoding='utf-8') a
         strLinha = strLinha.split(';')
         lstComponentes.append(strLinha)
 #
-zonaleste = 0
-for i in lstComponentes:
-    if i[11] == "ZL":
-        zonaleste += 1
-print(zonaleste)
+
+# ## Separando dados
+siglas = []
+for sigla in lstComponentes:
+    if sigla[11] not in str(siglas):
+        siglas.append([sigla[11]])
+
+#
+
+# ## Montando a lista A
+lista_a = siglas
+for tipo in lstComponentes:
+    if tipo[1] not in lista_a[siglas.index(tipo[11])]:
+        lista_a[siglas.index(tipo[11])].append(tipo[1])
+
+
+    
+    
+    
+    
+
+    
+    
+
+
         
     
 
