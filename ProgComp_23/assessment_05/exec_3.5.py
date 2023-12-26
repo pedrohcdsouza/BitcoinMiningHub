@@ -26,10 +26,10 @@ for tipo in lstComponentes:
 
 # Montando e criando arquivo da lista A
 lista_a = [[sigla, len(tipos)] for sigla, tipos in siglas.items()]
-print(lista_a)
+# print(lista_a)
 
 with open(strDiretorio + '\\servidores_campi.csv','w',encoding='utf-8') as arqEscrita:
-    strCabecalho = ["campus", "tipos_de_servidores"]
+    strCabecalho = ['campus', 'tipos_de_servidores']
     lista_a.insert(0,strCabecalho)
 
     for linha in lista_a:
@@ -37,24 +37,10 @@ with open(strDiretorio + '\\servidores_campi.csv','w',encoding='utf-8') as arqEs
         arqEscrita.write(f'{strLinha}\n')
 
 # ## Separando dados da Lista B
-docentes = {}
-for disciplina in lstComponentes:
-    if disciplina[0] == 'docente':
-        if disciplina[3] not in docentes:
-            docentes[disciplina[3]] = [disciplina[5]]
-        else:
-            if disciplina[5] not in docentes[disciplina[3]]:
-                docentes[disciplina[3]].append(tipo[5])
-print(docentes)
-
-    
-    
-
-    
-    
+filterDocentes = lambda x:x[0] == 'docente'
+lstDocentes = list(filter(filterDocentes,lstComponentes))
+setDisciplinas = set(map(y,lstDocentes))
 
 
-        
-    
 
 
