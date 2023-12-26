@@ -58,8 +58,10 @@ t = 0 #jogador1
 goleiro = [melhores_goleiros[t]['nome'],melhores_goleiros[t]['apelido_abreviado'],dictCartola['clubes'][str(melhores_goleiros[t]['clube_id'])]['nome'],float(melhores_goleiros[0]['media_num'] * melhores_goleiros[0]['jogos_num'])]
 #
 
-if wanted_roster == '343':
-    print(f"\nESCALAÇÃO CARTOLA FC no {wanted_roster}")
+for posicoes in range(0,5): #gol,zag,lat,mei,ata,tec
+    for posicao in roster:
+        print()
+
     
    
 
