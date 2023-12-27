@@ -23,10 +23,11 @@ for tipo in lstComponentes:
     else:
         if tipo[1] not in siglas[tipo[11]]:
             siglas[tipo[11]].append(tipo[1])
+#
 
-# Montando e criando arquivo da lista A
+# ## Montando e criando arquivo da lista A
 lista_a = [[sigla, len(tipos)] for sigla, tipos in siglas.items()]
-print(lista_a)
+print(f"Lista A: {lista_a}")
 
 with open(strDiretorio + '\\servidores_campi.csv','w',encoding='utf-8') as arqEscrita:
     strCabecalho = ['campus', 'tipos_de_servidores']
@@ -35,7 +36,8 @@ with open(strDiretorio + '\\servidores_campi.csv','w',encoding='utf-8') as arqEs
     for linha in lista_a:
         strLinha = ';'.join([str(item) for item in linha])
         arqEscrita.write(f'{strLinha}\n')
-
+#
+        
 # ## Separando dados da Lista B
 filterDocentes = lambda x:x[0] == 'docente'
 lstDocentes = list(filter(filterDocentes,lstComponentes))
@@ -46,10 +48,11 @@ for disc in setDisciplinas:
     qnt = len(list(filter(filterDisciplinas,lstDocentes)))
     dictDisciplinas[disc] = qnt
 dictDiscOrd = dict(sorted(dictDisciplinas.items()))
+#
 
 # ## Montando e criando arquivo da lista B
 lista_b = [[disc,qnt] for disc,qnt in dictDiscOrd.items()]
-print(lista_b)
+print(f"\nLista B: {lista_b}")
 
 with open(strDiretorio + '\\docentes_disciplinas.csv','w',encoding='utf-8') as arqEscrita:
     strCabecalho = ['disciplina_ingresso', 'quantidade_de_servidores']
@@ -58,5 +61,5 @@ with open(strDiretorio + '\\docentes_disciplinas.csv','w',encoding='utf-8') as a
     for linha in lista_b:
         strLinha = ';'.join([str(item) for item in linha])
         arqEscrita.write(f'{strLinha}\n')
-
+#
 
