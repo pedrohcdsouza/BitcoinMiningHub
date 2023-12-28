@@ -62,4 +62,4 @@ with open(strDiretorio + '\\docentes_disciplinas.csv','w',encoding='utf-8') as a
         strLinha = ';'.join([str(item) for item in linha])
         arqEscrita.write(f'{strLinha}\n')
 #
-
+#OBS COLOCAR TRY E EXCEPCT
