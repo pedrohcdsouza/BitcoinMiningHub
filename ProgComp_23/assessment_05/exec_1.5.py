@@ -58,12 +58,31 @@ t = 0 #jogador1
 goleiro = [melhores_goleiros[t]['nome'],melhores_goleiros[t]['apelido_abreviado'],dictCartola['clubes'][str(melhores_goleiros[t]['clube_id'])]['nome'],float(melhores_goleiros[0]['media_num'] * melhores_goleiros[0]['jogos_num'])]
 #
 
-for posicoes in range(0,5): #gol,zag,lat,mei,ata,tec
-    for posicao in roster:
-        print()
+formacoes = {
+    "343": {"Goleiro": 1, "Zagueiro": 3, "Lateral": 0, "Meia": 4, "Atacante": 3, "Técnico": 1},
+    "352": {"Goleiro": 1, "Zagueiro": 3, "Lateral": 0, "Meia": 5, "Atacante": 2, "Técnico": 1},
+    # Adicione as demais formações com suas respectivas quantidades de jogadores por posição
+}
 
-    
-   
+if wanted_roster in formacoes:
+    num_jogadores_por_posicao = formacoes[wanted_roster]
 
-    
-    
+    # Mapeamento dos nomes das posições para seus respectivos IDs
+    posicoes_ids = {"Goleiro": 1, "Zagueiro": 3, "Lateral": 2, "Meia": 4, "Atacante": 5, "Técnico": 6}
+
+    # Selecionando os jogadores de cada posição de acordo com a formação escolhida
+    selected_players = []
+    for posicao, quantidade in num_jogadores_por_posicao.items():
+        posicao_id = posicoes_ids[posicao]
+        jogadores_da_posicao = [x for x in dictMelhores if x['posicao_id'] == posicao_id]
+        sorted_players = sorted(jogadores_da_posicao, key=lambda x: x['media_num'] * x['jogos_num'], reverse=True)[:quantidade]
+        selected_players.extend(sorted_players)
+
+    # Exibindo a seleção do Cartola FC
+    print("Seleção do Cartola FC:")
+    for player in selected_players:
+        posicoes = ["Goleiro", "Zagueiro", "Lateral", "Meia", "Atacante", "Técnico"]
+        print(f"Posição: {posicoes[player['posicao_id'] - 1]}")
+        print(f"Nome: {player['nome']} ({player['apelido']})")
+        print(f"Time: {dictCartola['clubes'][str(player['clube_id'])]['nome']}")
+        print(f"Pontuação: {player['media_num'] * player['jogos_num']}")
