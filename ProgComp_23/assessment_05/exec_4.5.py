@@ -47,23 +47,31 @@ lstFlag = []
 setProd = set(lstProd)  # Nome de cada bandeira
 setRegiao = set(lstRegion)
 
-media_bandeira = {}
-for flag in setFlag:
-    filtered_data = [data for data in lstArq_data if data[5] == flag]
-    total_postos = len(filtered_data)
-    total_valor = sum(float(item[4].replace(',', '.')) for item in filtered_data)
-    media = total_valor / total_postos if total_postos > 0 else 0
+media_bandeira_produto = {}
+postosprod = {}
 
-    media_bandeira[flag] = media
+for produto in setProd:
+    for flag in setFlag:
+        filtered_data = [data for data in lstArq_data if data[2] == produto and data[5] == flag]
+        if flag not in postosprod:
+            postosprod[flag] = {}
+        postosprod[flag][produto] = len(filtered_data)
+        total_valor = sum(float(item[4].replace(',', '.')) for item in filtered_data)
+        media = total_valor / postosprod[flag][produto] if postosprod[flag][produto] > 0 else 0
+        if flag not in media_bandeira_produto:
+            media_bandeira_produto[flag] = {}
+        
+        media_bandeira_produto[flag][produto] = media
 
 # Cálculo da média por produto e região
 media_produto_regiao = {}
+postosreg = {}
 for produto in setProd:
     for regiao in setRegiao:
         filtered_data = [data for data in lstArq_data if data[2] == produto and data[0] == regiao]
-        total_postos = len(filtered_data)
+        postosreg[regiao] = len(filtered_data)
         total_valor = sum(float(item[4].replace(',', '.')) for item in filtered_data)
-        media = total_valor / total_postos if total_postos > 0 else 0
+        media = total_valor / postosreg[regiao] if postosreg[regiao] > 0 else 0
 
         if produto not in media_produto_regiao:
             media_produto_regiao[produto] = {}
@@ -71,13 +79,14 @@ for produto in setProd:
         media_produto_regiao[produto][regiao] = media
 
 # Gravando em arquivos
-with open(os.path.join(STRDIR, 'dados_estatisticos', 'media_bandeira.txt'), 'w', encoding='utf-8') as media_bandeira_file:
-    media_bandeira_file.write("bandeira – produto – ano – valor_medio_venda – quantidade_postos\n")
-    for flag, media in media_bandeira.items():
-        media_bandeira_file.write(f"{flag} – {media}\n")
+with open(STRDIR + '\\dados_estatisticos' + '\\media_bandeira.txt', 'w', encoding='utf-8') as media_bandeira_produto_file:
+    media_bandeira_produto_file.write("bandeira – produto - valor_medio_venda – quantidade_postos\n")
+    for flag, produtos in media_bandeira_produto.items():
+        for produto, media in produtos.items():
+            media_bandeira_produto_file.write(f"{flag} - {produto} - {media:.3f} - {postosprod[flag][produto]}\n")
 
-with open(os.path.join(STRDIR, 'dados_estatisticos', 'media_produto_regiao.txt'), 'w', encoding='utf-8') as media_produto_regiao_file:
-    media_produto_regiao_file.write("produto – região – ano – valor_medio – quantidade_postos\n")
+with open(STRDIR + '\\dados_estatisticos' + '\\media_produto_regiao.txt', 'w', encoding='utf-8') as media_produto_regiao_file: #Não consegui achar uma lógica para colocar o ano, o mesmo vale para partes do arquivo que estão faltando.
+    media_produto_regiao_file.write("produto – região – valor_medio – quantidade_postos\n")
     for produto, regioes in media_produto_regiao.items():
         for regiao, media in regioes.items():
-            media_produto_regiao_file.write(f"{produto} – {regiao} – {media}\n")
+            media_produto_regiao_file.write(f"{produto} – {regiao} – {media:.3f} - {postosreg[regiao]}\n")

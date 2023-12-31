@@ -73,7 +73,7 @@ best_tech = [x for x in dictMelhores if x['posicao_id'] == 6]
 if wanted_roster in roster: #
     numPlayer = roster[wanted_roster]
 
-    pos_ids = {"Goalkeeper": 1, "Defender": 3, "Wingback": 2, "Midfielder": 4, "Forward": 5, "Tech": 6}
+    pos_ids = {"Goalkeeper": 1, "Defender": 2, "Wingback": 3, "Midfielder": 4, "Forward": 5, "Tech": 6}
 
     selected_players = []
     for pos, qnt in numPlayer.items():

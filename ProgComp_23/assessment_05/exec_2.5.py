@@ -79,4 +79,3 @@ with open(strDiretorio + f'\\medias_cotacoes_{wanted_year}.csv','w',encoding='ut
 
 
 
-
