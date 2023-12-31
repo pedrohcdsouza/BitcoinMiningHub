@@ -1,5 +1,4 @@
-import csv
-import os
+import csv, os
 
 STRDIR = os.path.abspath(__file__)
 STRDIR = os.path.dirname(STRDIR)
