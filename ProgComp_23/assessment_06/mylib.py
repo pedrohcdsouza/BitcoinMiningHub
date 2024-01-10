@@ -10,6 +10,8 @@ def escolherOPCAO(opt, dictCartelas):
             dictCartelas[cartela] = {
                 "B": [random.randint(1, 15) for _ in range(5)],
                 "I": [random.randint(16, 30) for _ in range(5)],
-                "N": [random.randint(31, 45) for _ in range(5)]
+                "N": [random.randint(31, 45) for _ in range(5)],
+                "G": [random.randint(46, 60) for _ in range(5)],
+                "O": [random.randint(61,75) for _ in range(5)]
             }
         return dictCartelas
