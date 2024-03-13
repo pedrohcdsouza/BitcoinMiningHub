@@ -17,6 +17,9 @@ while True:
         ArcDir = os.path.join(strDir, ArcName)
         with open(ArcDir,'rb') as Arc_rb:
             ArcData = Arc_rb.read()
+        if not ArcData:
+            print("\nThe file is empty. Please provide a non-empty file.\n")
+            continue
         Keyword = str(input("Please enter a keyword: "))
         KeyLen = len(Keyword)
     except FileNotFoundError:
