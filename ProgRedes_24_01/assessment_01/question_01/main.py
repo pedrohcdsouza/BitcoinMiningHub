@@ -20,7 +20,7 @@ while True:
         if not ArcData:
             print("\nThe file is empty. Please provide a non-empty file.\n")
             continue
-        Keyword = str(input("Please enter a keyword: "))
+        Keyword = str(input("Please enter a cripto keyword: "))
         KeyLen = len(Keyword)
     except FileNotFoundError:
         print("\nThe desired file was not found!\nTry again...\n")
