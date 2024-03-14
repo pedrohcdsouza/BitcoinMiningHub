@@ -41,7 +41,9 @@ while True:
     try:
         ArcDest = str(input("Please enter the destination file name: "))
         ArcDestDir = os.path.join(strDir, ArcDest)
-
+        if os.path.exists(ArcDestDir):
+            print("\nThe file already exists. Please provide a another name file.\n")
+            continue
         with open(ArcDestDir, 'wb') as Arc_wb:
             for byte in BytesList:
                 Arc_wb.write(byte.to_bytes(1, byteorder='big'))
