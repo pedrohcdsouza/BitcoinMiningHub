@@ -5,12 +5,15 @@
 #                                                             #
 ###############################################################
 
+
+
 import time, hashlib
 
 def findNonce(dataToHash, bitsToBeZero):
     print('Código em execução... ')
-
+#time
     StartTime = time.time()
+
     nonce = 0
     while True:
         h = hashlib.sha256()
@@ -19,7 +22,7 @@ def findNonce(dataToHash, bitsToBeZero):
         h.update(dataBytes + nonceBytes)
         h_bin = ''.join(format(byte, '08b') for byte in h.digest())
 
-        if h_bin[0:bitsToBeZero] == '0'*bitsToBeZero:
+        if h_bin[0:int(bitsToBeZero)] == '0'*int(bitsToBeZero):#convertendo bitstobezero para inteiros
             break
         else:
             nonce += 1
@@ -30,4 +33,3 @@ def findNonce(dataToHash, bitsToBeZero):
     print(nonce)
     print(f'O tempo foi: {round(EndTime-StartTime,2)} segundos.')
     print(h.hexdigest())
-
