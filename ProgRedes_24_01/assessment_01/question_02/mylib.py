@@ -26,7 +26,6 @@ def findNonce(dataToHash, bitsToBeZero):
             break
         else:
             nonce += 1
-            print(nonce)
 
     EndTime = time.time()
 
