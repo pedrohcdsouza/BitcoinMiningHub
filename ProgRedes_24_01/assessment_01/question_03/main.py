@@ -23,6 +23,12 @@ while True:
             if not ReadTcpDump(reader):
                 print("\nThe file is empty. Please provide a non-empty file.\n")
                 continue
+            else:
+                
+                
+
+
+                
     except Exception as exc:
         print(exc)
     else:
