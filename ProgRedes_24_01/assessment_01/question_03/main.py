@@ -5,12 +5,25 @@
 #                                                             #
 ###############################################################
 
-import mylib
+import mylib, os
 
-# Lendo o arquivo
-ArcName = str(input("Please enter the desired filename (including the extension): "))
-mylib.ArqReader(ArcName)
+# Verificando o diretório do programa.
+strDir = os.path.abspath(__file__)  
+strDir = os.path.dirname(strDir)
 
-# Lendo o cabeçalho tcpdump
-mylib.TcpDump(mylib.ArqReader[0])
+# Criando um laço de repetição para solicitar o nome do arquivo desejado.
+while True: 
+    try:
+        ArcName = str(input("Please enter the desired filename (including the extension): "))
+        ArcDir = os.path.join(strDir, ArcName)
+        with open(ArcDir,'rb') as Arc_rb:
+            ArcData = Arc_rb.read()
+        if not ArcData: continue
+    except Exception as exc:
+        print(exc)
+    else:
+        break
 
+
+
+    
