@@ -21,23 +21,10 @@ def ReadArc(reader, CapLenght, OrgLenght):
     if CapLenght != OrgLenght: ArcBroken = True
     VariableData = reader.read(CapLenght)
     
-    
-
-
-    
-
-
-
-
-# with open(arqDir, 'rb') as r:
-#     tcpdumpHEADER = r.read(24)
-#     packetHEADER = r.read(16)
-# MagicNumber = tcpdumpHEADER[0:4]
-# print(MagicNumber)
-# TimeStamp = datetime.datetime.fromtimestamp(int.from_bytes(packetHEADER[0:4], 'little'))
-# print(TimeStamp)
-
-
+    MACDest = VariableData[:5]
+    MACSour = VariableData[6:11]
+    Type = VariableData[12:13]
+    Payload = VariableData[14:len(VariableData-18)] # -18 Bytes por que é a quantidade para capturar apenas o Payload (FCS,MacDes,MacOrg,CRC)
 
 
 
