@@ -9,26 +9,31 @@
 
 import time, hashlib
 
+# Criando DefUSER para calcular o hashlib desejado.
 def findNonce(dataToHash, bitsToBeZero):
-    print('Código em execução... ')
-#time
+
+    print('\nCódigo em execução... \n')
+
     StartTime = time.time()
+    Nonce = 0
 
-    nonce = 0
     while True:
-        h = hashlib.sha256()
-        dataBytes = dataToHash.encode('utf-8')  # Convertendo a string em bytes
-        nonceBytes = nonce.to_bytes(4, byteorder='big')
-        h.update(dataBytes + nonceBytes)
-        h_bin = ''.join(format(byte, '08b') for byte in h.digest())
+        HashLib = hashlib.sha256()
 
-        if h_bin[0:int(bitsToBeZero)] == '0'*int(bitsToBeZero):#convertendo bitstobezero para inteiros
+        dataBytes = dataToHash.encode('utf-8')
+# Adicionando o valor de Nonce para 4 bytes.
+        nonceBytes = Nonce.to_bytes(4, byteorder='big')
+
+        HashLib.update(dataBytes + nonceBytes)
+# OBS: O hexdigest é utilizado para fazer a leitura do Sha265. (um objeto)
+        HashHex = HashLib.hexdigest()
+        HashBin = format(int(HashHex, 16), '0256b')
+        if HashBin[0:int(bitsToBeZero)] == '0'*int(bitsToBeZero):
             break
         else:
-            nonce += 1
+            Nonce += 1
 
     EndTime = time.time()
+    ProgramTime = round(EndTime-StartTime,3)
 
-    print(nonce)
-    print(f'O tempo foi: {round(EndTime-StartTime,2)} segundos.')
-    print(h.hexdigest())
+    return Nonce, ProgramTime, HashHex
