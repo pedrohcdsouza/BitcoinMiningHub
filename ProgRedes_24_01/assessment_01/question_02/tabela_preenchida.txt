@@ -1,4 +1,4 @@
-TextoParaValidar;BitsEmZero;Nonce;Tempo(s)
+DataToBeHash;BitsToBeZero;Nonce;Tempo(s)
 “Esse é fácil”;8;723;0.0 Seconds.
 “Esse é fácil”;10;1544;0.0 Seconds.
 “Esse é fácil”;15;33223;0.298 Seconds.

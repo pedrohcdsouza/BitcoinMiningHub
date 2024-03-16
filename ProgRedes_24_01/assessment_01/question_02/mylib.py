@@ -21,12 +21,11 @@ def findNonce(dataToHash, bitsToBeZero):
         HashLib = hashlib.sha256()
 
         dataBytes = dataToHash.encode('utf-8')
-# Adicionando o valor de Nonce para 4 bytes.
+        # Adicionando o valor de Nonce para 4 bytes.
         nonceBytes = Nonce.to_bytes(4, byteorder='big')
-
         HashLib.update(dataBytes + nonceBytes)
-# OBS: O hexdigest é utilizado para fazer a leitura do Sha265. (um objeto)
         HashHex = HashLib.hexdigest()
+        # Transformando o Hash para binário, assim, podendo ler os seus bits.
         HashBin = format(int(HashHex, 16), '0256b')
         if HashBin[0:int(bitsToBeZero)] == '0'*int(bitsToBeZero):
             break

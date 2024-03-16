@@ -27,18 +27,19 @@ while True:
         KeyLen = len(Keyword)
     except FileNotFoundError:
         print("\nThe desired file was not found!\nTry again...\n")
+    except KeyboardInterrupt:
+        print("Finishing the program...")
+        sys.exit()
     except:
         print(f"\nERROR: {sys.exc_info()[0]}")
         sys.exit()
     else:
         break
-
 # Verificando a posição atual byte do texto, e do byte da palavra-chave. E utilizando o operador xor (^).
 BytesList = []
 for i, byte in enumerate(ArcData):
     byte_password = ord(Keyword[i % KeyLen])
     BytesList.append(byte ^ byte_password)
-
 # Criando um laço de repetição para solicitar o nome do arquivo (e cria-lo), escrevendo no arquivo cada byte 'criptografado' que foi colocado dentro da lista (BytesList). Tratando as exceções caso necessário.
 while True:
     try:
@@ -50,6 +51,9 @@ while True:
         with open(ArcDestDir, 'wb') as Arc_wb:
             for byte in BytesList:
                 Arc_wb.write(byte.to_bytes(1, byteorder='big'))
+    except KeyboardInterrupt:
+        print("Finishing the program...")
+        sys.exit()
     except FileNotFoundError:
         print("\nThe file name is invalid!\nCtrl^ to exit.\n")
         continue
