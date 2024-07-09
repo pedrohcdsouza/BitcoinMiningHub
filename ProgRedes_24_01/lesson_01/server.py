@@ -17,9 +17,9 @@ while True:
     chost, cport = client[0], client[1]
     if data:
         clientDir[chost] = (cport, (data, datetime.datetime.now()))
-        msg = f'Hello! I received "{data}" from "{client}" at {clientDir[chost[1][1]]}'
+        msg = f'Hello! I received "{data}" from "{client}" at {clientDir[chost[1]]}'
         msg = msg.encode('utf-8')
-        udpSocket.sendto(msg, (client))
+        udpSocket.sendto(msg, client)
         print(f'{client}:{msg}')
 
         

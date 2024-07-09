@@ -2,13 +2,12 @@
 
 import socket
 
-HOST = '10.25.3.164'
+HOST = '10.25.2.89'
 PORT = 50000
 
 server = (HOST, PORT)
 
 udpSocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-udpSocket.bind((HOST, PORT))
 while True:
     msg = input(f'Message to {HOST}: \n')
     msg = msg.encode('utf-8')
