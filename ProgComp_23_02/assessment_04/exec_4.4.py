@@ -11,7 +11,7 @@ Ao término, o programa deverá listar todos os saques efetuados, mostrando quai
 value = 0
 
 while True:
-    n = float(input("Write a value: "))
+    n = float(input("Write a value: \nEX: 10.25"))
     if n == 0:
         break
     elif n < 0.01:

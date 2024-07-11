@@ -1,11 +1,11 @@
 #pedrohcdsouza arquive
 
-salary = float(input(f"Please, write your salary: ")) #salário = float(input(f"Por favor informe seu salário: ))
-provision = float(input(f"Please, write the monthly provision of a loan: ")) #prestação = float(input(f"Por favor, informe a prestação mensal do empréstimo: ))
+salary = float(input(f"Please, write your salary: "))
+provision = float(input(f"Please, write the monthly provision of a loan: "))
 
 if salary < 0 and provision < 0:
-    print ("Enter a valid value!") #print ("Escreva um valor válido!")
+    print ("Enter a valid value!")
 elif (provision/salary) < 0.2:
-    print ("Loan granted!") #print ("Empréstimo concecido!")
+    print ("Loan granted!")
 else:
-    print ("Loan not granted.") #print ("Empréstimo não concecido!")
+    print ("Loan not granted.")

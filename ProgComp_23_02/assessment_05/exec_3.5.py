@@ -5,7 +5,7 @@ strDiretorio = os.path.abspath(__file__)
 strDiretorio = os.path.dirname(strDiretorio)
 
 # ## Abrindo o arquivo
-with open(strDiretorio + '\\relacao_servidores_ifrn.csv','r',encoding='utf-8') as arqLeitura:
+with open(strDiretorio + '\\archives\\relacao_servidores_ifrn.csv','r',encoding='utf-8') as arqLeitura:
     lstComponentes = list()
     while True:
         remCabecalho = arqLeitura.readline()[:-1]
@@ -62,4 +62,3 @@ with open(strDiretorio + '\\docentes_disciplinas.csv','w',encoding='utf-8') as a
         strLinha = ';'.join([str(item) for item in linha])
         arqEscrita.write(f'{strLinha}\n')
 #
-#OBS COLOCAR TRY E EXCEPCT
