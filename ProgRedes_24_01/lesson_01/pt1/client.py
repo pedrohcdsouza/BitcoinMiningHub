@@ -2,7 +2,7 @@
 
 import socket
 
-HOST = '192.168.2.245'
+HOST = '10.25.3.164'
 PORT = 50000
 
 server = (HOST, PORT)
