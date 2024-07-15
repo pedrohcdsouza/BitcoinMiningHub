@@ -36,9 +36,20 @@ while True:
                         msg = msg.decode('utf-8')
                         udpSocket.sendto(msg, client)
                         time.sleep(10)
-                        packet = 0
-                        while True:
-                            data, client = udpSocket.recvfrom(512)
+                        data, now_client = udpSocket.recvfrom(64)
+                        if now_client == client:
+                            arcname,arcsize = data[0], data[1]
+                            ac_size = 512
+                            while ac_size <= arcsize:
+                                data, client = udpSocket.recvfrom(ac_size)
+                                if client == now_client:
+                                    mylib.uploadArc(data[0], data[1])
+                                    ac_size += 512
+                            msg = f'Your file was 100% uploaded.'
+                            msg.encode('utf-8')  
+                            udpSocket.sendto(msg, client)
+                                
+
                     
 
             else:
