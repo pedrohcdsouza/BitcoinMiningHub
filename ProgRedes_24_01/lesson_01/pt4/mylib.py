@@ -17,6 +17,8 @@ def createHost(name, client_ip):
     with open(baseDir, '\\database.csv', 'w', encoding='utf-8') as csv_file:
         csv_writer = csv.writer(csv_file, delimiter=',')
         csv_writer.writerow([name, client_ip])
+
+def uploadArc()
             
             
 
