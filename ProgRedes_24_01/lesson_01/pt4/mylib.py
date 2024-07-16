@@ -18,7 +18,7 @@ def createHost(name, client_ip):
         csv_writer = csv.writer(csv_file, delimiter=',')
         csv_writer.writerow([name, client_ip])
 
-def uploadArc(arcname, data):
+def uploadFiles(arcname, data):
     with open(baseDir + '\\server_files' + f'\\{arcname}', 'w', encoding='utf-8') as client_file:
         client_file.write(data)
 

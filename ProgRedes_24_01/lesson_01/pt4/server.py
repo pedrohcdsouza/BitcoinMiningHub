@@ -1,6 +1,8 @@
 #pedrohcdsouza archive
 
-import socket, datetime, mylib, time
+import socket, datetime, time
+from mylib import *
+
 HOST = ''
 PORT = 50000
 clientDir = {}
@@ -13,46 +15,31 @@ while True:
     data, client = udpSocket.recvfrom(64)
     data = data.decode('utf-8')
     chost, cport = client[0], client[1]
-    
-    if data:
-        if mylib.validadeHost(chost):
-            msg = f'Hello {chost}! Your first name are not in our database, please send it to us.'
-            msg = msg.encode('utf-8')
+
+    if mylib.validadeHost(chost) == False:
+        msg = f'Hello {chost}! Your first name are not in our database, please send it to us.'
+        msg = msg.encode('utf-8')
+        udpSocket.sendto(msg, client)
+    else:
+        name = mylib.validadeHost(chost)
+        msg = f'Hello {name}! This is a server-files. Choose a option:\n1-Upload files\n2-Download files\n3-List files\n'
+        msg = msg.encode('utf-8')
+        udpSocket.sendto(msg, client)
+
+        data, client = udpSocket.recvfrom(64)
+        data = data.decode('utf-8')
+
+        if data == 1:
+            uploadFiles()
+        elif data == 2:
+            downloadFiles()
+        elif data == 3:
+            listFiles()
+        else:
+            msg = f'Option invalid!'
+            msg.encode('utf-8')
             udpSocket.sendto(msg, client)
-            time.sleep(10)
-            data, now_client = udpSocket.recvfrom(64)
-            if now_client == client:
-                data = data.decode('utf-8')
-                mylib.createHost(data, chost)
-                msg = f'Hello {data}, pleasure. This is a file_server, what did you want?\n1 = Upload archive \n2 = Download archive \n3 = Archive list'
-                msg = msg.encode('utf-8')
-                udpSocket.sendto(msg, client)
-                time.sleep(10)
-                data, now_client = udpSocket.recvfrom(64)
-                if now_client == client:
-                    data = data.encode('utf-8')
-                    if data == 1:
-                        msg = f'Please, choose your file and send to us.'
-                        msg = msg.decode('utf-8')
-                        udpSocket.sendto(msg, client)
-                        time.sleep(10)
-                        data, now_client = udpSocket.recvfrom(64)
-                        if now_client == client:
-                            arcname,arcsize = data[0], data[1]
-                            ac_size = 512
-                            while ac_size <= arcsize:
-                                data, client = udpSocket.recvfrom(ac_size)
-                                if client == now_client:
-                                    mylib.uploadArc(data[0], data[1])
-                                    ac_size += 512
-                            msg = f'Your file was 100% uploaded.'
-                            msg.encode('utf-8')  
-                            udpSocket.sendto(msg, client)
-                                
-
-                    
-
-            else:
-                continue
-
-
+            break
+msg = f'Connection finished...'
+msg = msg.encode('utf-8')
+udpSocket.sendto(msg, client)
