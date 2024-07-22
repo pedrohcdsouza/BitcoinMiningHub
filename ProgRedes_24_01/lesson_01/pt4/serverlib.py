@@ -24,10 +24,9 @@ def validadeHost(client_ip):
                 return name
         return False
 
-def createHost(name, client_ip):
-    with open(baseDir + '\\database.csv', 'a', encoding='utf-8') as csv_file:
-        csv_writer = csv.writer(csv_file, delimiter=',')
-        csv_writer.writerow([name, client_ip])
+def createHost(data, client_ip):
+    with open(baseDir + '\\database.csv', 'w', encoding='utf-8') as csv_file:
+        csv_file.write(f'\n{data[0]},{client_ip}')
 
 def uploadFile(arcName, arcSize, client, udpSocket):
     with open(baseDir + '\\server_files' + f'\\{arcName}', 'wb') as client_file:

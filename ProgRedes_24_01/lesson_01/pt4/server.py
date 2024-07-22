@@ -6,10 +6,10 @@ udpSocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 udpSocket.bind((HOST, PORT))
 
 while True:
-    fConnection = hearUdp(64, udpSocket)
+    response = hearUdp(64, udpSocket)
 
-    userHost = fConnection[1][0]
-    client = fConnection[1]
+    userHost = response[1][0]
+    client = response[1]
 
     if validadeHost(userHost) == False:
         msg = (f'Hello {userHost}, please send to us your firstname to continue.')
