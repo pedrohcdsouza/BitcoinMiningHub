@@ -2,11 +2,12 @@
 
 import socket, os
 
-HOST = '192.168.2.245'
+HOST = '10.25.3.164'
 PORT = 50007
 osDir = os.path.abspath(__file__)
 osDir = os.path.dirname(osDir)
 
+<<<<<<< HEAD
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server:
     server.connect((HOST, PORT))
@@ -27,6 +28,12 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server:
 
 
     
+=======
+with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server:
+    server.connect((HOST, PORT))
+    server.sendall(b'PUT 10 teste1.txt\r\n\r\n AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
+        
+>>>>>>> a7d1391ef8771effce59fd0419b573c90136b8e1
 
 
 
