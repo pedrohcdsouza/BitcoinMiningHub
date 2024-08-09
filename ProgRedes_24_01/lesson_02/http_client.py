@@ -1,4 +1,0 @@
-# pedrohcdsouza arquive
-
-import socket
-
