@@ -85,7 +85,6 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server:  # Defining ne
     else:  # For non-empty arcName
 
         for metadata in header.split('\r\n'):
-            print(metadata)
             key, value = metadata.split(': ')
             if key == 'Content-Length':
                 arcSize = int(value)
@@ -96,33 +95,36 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server:  # Defining ne
 
     if transfer_encoding == 'chunked':  # Data-Reader Mode: Chunked
 
-        try:
+
             
-            rawData = rest
-            while b'\r\n' not in rawData:
-                rawData += server.recv(512)
+        rawData = rest
+        while b'\r\n' not in rawData:
+            rawData += server.recv(512)
 
-            with open(osDir + f'\\{arcName}', 'wb') as archive:
+        with open(osDir + f'\\{arcName}', 'wb') as archive:
 
-                while True:
-                    
-                    chunkSize, data = rawData.split(b'\r\n', 1)
-                    chunkSize = int(chunkSize, 16)
+            while True:
+                
+                print(rawData)
+                print()
+                print()
+                chunkSize, data = rawData.split(b'\r\n', 1)
+                chunkSize = int(chunkSize, 16)
 
-                    if chunkSize == 0:
-                        break
+                if chunkSize == 0:
+                    break
 
-                    while chunkSize < len(data):
-                        data += server.recv(512)
-                    
-                    chunkData, rawData = data[:chunkSize], data[chunkSize+2:]
+                while chunkSize > len(data):
+                    data += server.recv(512)
+                    print(data)
+                chunkData, rawData = data[:chunkSize], data[chunkSize+2:]
 
-                    archive.write(chunkData)
+                archive.write(chunkData)
 
             print('File Downloaded ...')
 
-        except Exception as exc:
-            print(exc)
+
+            # LEMBRAR DE PARA CADA EXCEPT DE FILE_ERROR, ADICIONAR +1 AO FINAL DO NOME DO ARQUIVO. (UTILIZANDO UMA VARIAVEL CHAMADO TENTATIVA)
 
     elif arcSize > 0:  # Data-Reader Mode: Length
 
