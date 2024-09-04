@@ -1,6 +1,6 @@
 # Master Core Code
 
-import socket, sys
+import socket, sys, threading
 from masterlib import *
 
 print('The server is starting up ...\n')
@@ -29,4 +29,8 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server: # Defining net
 
         print('The server is now online ...\n')
 
-        connectMiners(server)
+        transactionsThread = threading.Thread(target=hearTransactions)
+        connectMinersThread = threading.Thread(target=connectMiners, args=(server,))
+
+        transactionsThread.start()
+        connectMinersThread.start()
