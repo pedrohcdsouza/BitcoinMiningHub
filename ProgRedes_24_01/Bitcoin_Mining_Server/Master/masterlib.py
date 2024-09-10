@@ -2,43 +2,65 @@
 
 import socket, struct
 
-def hearTransactions(): # Function to hear user-Transaction
+connectedAgents = dict() # Defining the Connected Agents
+transactionsDict = dict() # Defining the Transactions List PS: It's a directory
+tNumber = 0 # Transaction Number
 
-    transactions = list() # Defining the List Transactions
+def hearTransactions(): # Function to hear user-Transaction
 
     while True:
 
         try:
-
-            print('Waiting for transactions ...\n')
-            transaction = str(input('INPUT: '))
+            
+            transaction = str(input('Waiting for Transactions...\n'))
+            print('print for see the data...\n\n')
 
             if transaction == 'print': # Soluction for Print the List Transactions
-                print(transactions)
+                print(f'Transactions: {transactionsDict}\nConnected Agents: {connectedAgents}')
                 continue
-            transactions.append(transaction)
+
+            transactionsDict[tNumber] = transaction
+            tNumber += 1
 
         except Exception as exp:
             print('ERROR: Invalid transaction ...\n')
             continue
-        
-def connectMiners(server): # Function to connect miners
+
+def connectAgents(server): # Function to connect agents
 
     while True:
 
-        try: 
+        try: # Start of agent connection PS: finish line in 75
 
-            connection, IP = server.accept() # Connecting the miner
+            connection, IP = server.accept() # Connecting the agent
+            connectedAgents[f'{IP[0]}'] = ''
 
-        except:
-            continue
+            # Hearing the G Protocol
 
-        try:
+            rawResponse = connection.recv(11) # G + 10 bytes
+            try:
 
-            rawResponse = connection.recv(1)
-            response = struct.unpack('c', rawResponse)
+                while len(rawResponse) != 11:
+                    rawResponse += connection.recv(1)
 
+                protocol, name = struct.unpack('c10s', rawResponse)
 
-        except:
-            continue
+            except:
+                continue
+
+            if protocol != b'G':
+                continue
+
+            if name != bytes(10): 
+                connectedAgents[f'{agentIP[0]}'] = name
+
             
+
+        except: # finish agent line
+
+            del connectedAgents[f'{IP[0]}']
+            continue
+        
+
+
+

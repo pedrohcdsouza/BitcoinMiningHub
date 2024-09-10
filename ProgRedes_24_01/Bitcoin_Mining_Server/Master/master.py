@@ -5,32 +5,33 @@ from masterlib import *
 
 print('The server is starting up ...\n')
 
-with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server: # Defining network and transport protocols (IPV4, TCP)
+server = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # Defining network and transport protocols (IPV4, TCP)
 
-    try: # Trying to start the server ...
-    
-            # Defining connection options
+try: # Trying to start the server ...
 
-            HOST = '127.0.0.1'
-            PORT = 31471
-            server.bind((HOST,PORT)) # Hearing requests
-            server.listen(10)
+    # Defining connection options
 
-    except OSError: # Handling exception in case of server startup error
+    HOST = '127.0.0.1'
+    PORT = 31471
+    server.bind((HOST,PORT)) # Hearing requests
+    server.listen(10)
 
-        print('ERROR: The server failed to start ...\nEnding Application ...\n')
-        sys.exit()
+except OSError: # Handling exception in case of server startup error
 
-    except Exception as exp:
+    print('ERROR: The server failed to start ...\nEnding Application ...\n')
+    sys.exit()
 
-        print(exp)
+except Exception as exp:
 
-    else:
+    print(exp)
+    sys.exit()
 
-        print('The server is now online ...\n')
+else:
 
-        transactionsThread = threading.Thread(target=hearTransactions)
-        connectMinersThread = threading.Thread(target=connectMiners, args=(server,))
+    print('The server is now online ...\n')
 
-        transactionsThread.start()
-        connectMinersThread.start()
+    transactionsThread = threading.Thread(target=hearTransactions)
+    connectAgentsThread = threading.Thread(target=connectAgents, args=(server,))
+
+    transactionsThread.start()
+    connectAgentsThread.start()

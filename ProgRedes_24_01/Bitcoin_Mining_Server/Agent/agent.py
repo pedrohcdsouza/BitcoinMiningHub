@@ -9,7 +9,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as agent:
 
     agent.connect((HOST, PORT))
 
-    yourName = str(input('Digite o seu nome ...'))
+    yourName = str(input('Digite o seu nome ...\n'))
     yourName = struct.pack('c10s',b'G', yourName.encode())
     agent.sendall(yourName)
 
