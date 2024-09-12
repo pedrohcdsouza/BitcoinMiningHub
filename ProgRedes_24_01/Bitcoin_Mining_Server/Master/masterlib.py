@@ -1,11 +1,19 @@
 # Master Library Code
 
+# LEMBRAR DE DEIXAR O CÓDIGO MAIS LIMPO
+
 import socket, struct
 
 connectedAgents = dict() # Defining the Connected Agents
+agentsList = []
 transactionsDict = dict() # Defining the Transactions List PS: It's a directory
 foundedDict = dict()
 tNumber = 0 # Transaction Number
+
+def broadcast(trans):
+    for conn in agentsList:
+        conn.sendall(b'')
+    
 
 def hear(bytes, connection): # Function to hear whatever
 
@@ -32,6 +40,9 @@ def hearTransactions(): # Function to hear user-Transaction
                 print(f'Transactions: {transactionsDict}\nConnected Agents: {connectedAgents}')
                 continue
 
+            if transaction == 'exit' # Soluction for Close the Server
+                print('Closing the server ...')
+
             transactionsDict[tNumber] = [bitsZero, transaction]
             tNumber += 1
 
@@ -47,6 +58,7 @@ def connectAgents(server): # Function to connect agents
 
             connection, IP = server.accept() # Connecting the agent
             connectedAgents[f'{IP[0]}'] = '' # Adding the agent ip in dict
+            agentsList.append(connection)
 
             # Hearing the PROTOCOL-Type
 
@@ -71,12 +83,12 @@ def connectAgents(server): # Function to connect agents
                 # Separating data
 
                 for k, v in transactionsDict.items():
-                    if v not in foundedDict:
+                    if v not in foundedDict.values():
+                        numTrans = k
                         bitsZero = v[0]
                         actTrans = v[1]
                         tranSize = len(actTrans)
                     break                        
-                numTrans = transactionsDict[len(transactionsDict) - 1]
                 numClient = len(connectedAgents)
                 winSize = 1000000
 
@@ -89,9 +101,12 @@ def connectAgents(server): # Function to connect agents
                     winSize,
                     bitsZero, 
                     tranSize,
-                    actTrans
+                    actTrans.encode()
                 )
 
+                connection.sendall(response) # Sending the protocol G
+            
+            
 
                 
 
@@ -100,9 +115,10 @@ def connectAgents(server): # Function to connect agents
 
 
 
-        except: # finish agent line
-
+        except Exception as exp: # finish agent line
+            print(exp)
             del connectedAgents[f'{IP[0]}']
+            agentsList.remove(connection)
             continue
         
 
