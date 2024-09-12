@@ -13,3 +13,8 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as agent:
     yourName = struct.pack('c10s',b'G', yourName.encode())
     agent.sendall(yourName)
 
+    response = agent.recv(10)
+    response = struct.unpack('c', response)
+    print(response)
+    input()
+
