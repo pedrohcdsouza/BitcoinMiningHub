@@ -2,17 +2,26 @@
 
 # LEMBRAR DE DEIXAR O CÓDIGO MAIS LIMPO
 
-import socket, struct
+import struct, threading, sys
 
 connectedAgents = dict() # Defining the Connected Agents
-agentsList = []
+agentsList = list()
 transactionsDict = dict() # Defining the Transactions List PS: It's a directory
-foundedDict = dict()
+foundedList = list()
 tNumber = 0 # Transaction Number
+nonceLock = threading.Lock()
 
-def broadcast(trans):
+def validateNonce(nonce, numTrans):
+    return False
+
+def StopingServer():
     for conn in agentsList:
-        conn.sendall(b'')
+        response = struct.pack('c', b'Q')  # PROTOCOL - Q
+
+def FindNonce(numTrans):
+    for conn in agentsList:
+        response = struct.pack('!ci', b'I', numTrans) # PROTOCOL - I 
+        conn.sendall(response)
     
 
 def hear(bytes, connection): # Function to hear whatever
@@ -40,8 +49,9 @@ def hearTransactions(): # Function to hear user-Transaction
                 print(f'Transactions: {transactionsDict}\nConnected Agents: {connectedAgents}')
                 continue
 
-            if transaction == 'exit' # Soluction for Close the Server
+            if transaction == 'exit': # Soluction for Close the Server
                 print('Closing the server ...')
+                sys.exit()
 
             transactionsDict[tNumber] = [bitsZero, transaction]
             tNumber += 1
@@ -60,63 +70,81 @@ def connectAgents(server): # Function to connect agents
             connectedAgents[f'{IP[0]}'] = '' # Adding the agent ip in dict
             agentsList.append(connection)
 
-            # Hearing the PROTOCOL-Type
+            while True:
 
-            protocol = connection.recv(1)
-            protocol = struct.unpack('c', protocol)
-            protocol = protocol[0]
+                # Hearing the PROTOCOL-Type
 
-            # PROTOCOL - G
+                protocol = connection.recv(1)
+                protocol = struct.unpack('c', protocol)
+                protocol = protocol[0]
 
-            if protocol == b'G':
+                # PROTOCOL - G
 
-                name = hear(10, connection)
-                if name != bytes(10):
-                    connectedAgents[f'{IP[0]}'] = name # Adding the agent name in Dict
+                if protocol == b'G':
 
-                if len(transactionsDict) == 0: # PROTOCOL - W
+                    name = hear(10, connection)
+                    if name != bytes(10):
+                        connectedAgents[f'{IP[0]}'] = name # Adding the agent name in Dict
 
-                    response = struct.pack('c', b'W')
-                    connection.sendall(response)
-                    connection.close()
+                    if len(transactionsDict) == 0: # PROTOCOL - W
+
+                        response = struct.pack('c', b'W')
+                        connection.sendall(response) # Sending the protocol W
+                        connection.close()
+                    
+                    # Separating data
+
+                    for k, v in transactionsDict.items():
+                        if k not in foundedList:
+                            numTrans = k
+                            bitsZero = transactionsDict[k][0]
+                            actTrans = transactionsDict[k][1]
+                            tranSize = len(actTrans)
+                            break                        
+                    numClient = len(connectedAgents)
+                    winSize = 1000000
+
+                    # Preparing a response
+
+                    response = struct.pack(
+                        f'!cHHIBI{tranSize}s',
+                        b'T',
+                        numTrans,
+                        numClient,
+                        winSize,
+                        bitsZero, 
+                        tranSize,
+                        actTrans.encode()
+                    )
+
+                    connection.sendall(response) # Sending the protocol G
                 
-                # Separating data
+                # PROTOCOL - S
 
-                for k, v in transactionsDict.items():
-                    if v not in foundedDict.values():
-                        numTrans = k
-                        bitsZero = v[0]
-                        actTrans = v[1]
-                        tranSize = len(actTrans)
-                    break                        
-                numClient = len(connectedAgents)
-                winSize = 1000000
+                if protocol == b'S':
 
-                # Preparing a response
+                    data = hear(6, connection)
+                    numTrans, nonce = struct.unpack('!Hi', data)
+                    
+                    with nonceLock:
+                        if validateNonce(numTrans, nonce): # PROTOCOL - A
+                            response = struct.pack('!ci', b'A', numTrans)
+                            connection.sendall(response)
 
-                response = struct.pack(
-                    f'!HHIBI{tranSize}s',
-                    numTrans,
-                    numClient,
-                    winSize,
-                    bitsZero, 
-                    tranSize,
-                    actTrans.encode()
-                )
+                            FindNonce(numTrans)
 
-                connection.sendall(response) # Sending the protocol G
-            
-            
+                            foundedList.append(numTrans)
+                        else: # PROTOCOL - R
+                            response = struct.pack('!ci', b'R', numTrans)
+                            connection.sendall(response)
 
-                
+        except SystemExit:
 
-                
+            StopingServer()
+            sys.exit()
 
+        except: # finish agent line
 
-
-
-        except Exception as exp: # finish agent line
-            print(exp)
             del connectedAgents[f'{IP[0]}']
             agentsList.remove(connection)
             continue
