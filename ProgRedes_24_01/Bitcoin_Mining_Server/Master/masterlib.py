@@ -2,7 +2,7 @@
 
 # LEMBRAR DE DEIXAR O CÓDIGO MAIS LIMPO
 
-import struct, threading, sys
+import struct, threading, sys, hashlib
 
 connectedAgents = dict() # Defining the Connected Agents
 agentsList = list()
@@ -11,19 +11,32 @@ foundedList = list()
 tNumber = 0 # Transaction Number
 nonceLock = threading.Lock()
 
-def validateNonce(nonce, numTrans):
-    return False
+def validateNonce(numTrans, nonce):
+    bitszero = transactionsDict[numTrans][0]
+    trans = transactionsDict[numTrans][1]
+
+    if isinstance(trans, str):
+        trans = trans.encode('utf-8')
+
+    bValue = struct.pack('i', nonce)
+    hashx = hashlib.sha256(bValue + trans).digest()
+    transBin = ''.join(format(byte, '08b') for byte in hashx)
+
+    if transBin[:bitszero] == '0' * bitszero:
+        return True
+    else:
+        return False
 
 def StopingServer():
     for conn in agentsList:
         response = struct.pack('c', b'Q')  # PROTOCOL - Q
+        conn.sendall(response)
 
 def FindNonce(numTrans):
     for conn in agentsList:
         response = struct.pack('!ci', b'I', numTrans) # PROTOCOL - I 
         conn.sendall(response)
     
-
 def hear(bytes, connection): # Function to hear whatever
 
     try:
@@ -86,15 +99,15 @@ def connectAgents(server): # Function to connect agents
                     if name != bytes(10):
                         connectedAgents[f'{IP[0]}'] = name # Adding the agent name in Dict
 
-                    if len(transactionsDict) == 0: # PROTOCOL - W
+                    if len(transactionsDict) == 0 or len(transactionsDict) == len(foundedList): # PROTOCOL - W
 
                         response = struct.pack('c', b'W')
                         connection.sendall(response) # Sending the protocol W
-                        connection.close()
+                        # connection.close()
                     
                     # Separating data
 
-                    for k, v in transactionsDict.items():
+                    for k in transactionsDict.items():
                         if k not in foundedList:
                             numTrans = k
                             bitsZero = transactionsDict[k][0]
@@ -123,10 +136,12 @@ def connectAgents(server): # Function to connect agents
 
                 if protocol == b'S':
 
-                    data = hear(6, connection)
+                    data = connection.recv(6)
+
                     numTrans, nonce = struct.unpack('!Hi', data)
-                    
-                    with nonceLock:
+
+                    with nonceLock: # Opening a lock to check the nonce
+
                         if validateNonce(numTrans, nonce): # PROTOCOL - A
                             response = struct.pack('!ci', b'A', numTrans)
                             connection.sendall(response)
@@ -134,6 +149,7 @@ def connectAgents(server): # Function to connect agents
                             FindNonce(numTrans)
 
                             foundedList.append(numTrans)
+                            print(foundedList)
                         else: # PROTOCOL - R
                             response = struct.pack('!ci', b'R', numTrans)
                             connection.sendall(response)
