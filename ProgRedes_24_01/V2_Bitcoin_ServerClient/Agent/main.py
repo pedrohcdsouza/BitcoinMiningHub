@@ -3,6 +3,8 @@ from mylib import *
 
 print('THE APPLICATION IS STARTING ...')
 
+# Configuring socket 
+
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 try:
@@ -20,6 +22,6 @@ print('THE APPLICATION WAS STARTED ...\n')
 
 name = str(input('Write a username: '))
 
-startApplication(sock, name)
+startApplication(sock, name) # Calling the primary Function
 
-threading.Thread(target=checkWork, args=(sock,)).start()
+threading.Thread(target=checkWork, args=(sock,)).start() # Thread to hear server when application is mining

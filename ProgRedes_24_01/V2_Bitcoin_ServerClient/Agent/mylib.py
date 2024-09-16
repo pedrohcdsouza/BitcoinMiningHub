@@ -1,4 +1,4 @@
-import threading, struct, time, sys, hashlib
+import threading, struct, time, sys, hashlib, datetime
 
 # STATIC VARIABLES
 
@@ -44,10 +44,12 @@ def startMining(sock):
 
     while checkwork:
         
-        # nonce = (numA * winS) - 1
-        nonce = 0
-        # nonce < (numA * winS) + winS
-        while True:
+        if numA == 1:
+            nonce = 0
+        else:
+            nonce = numA * winS
+
+        while nonce < (nonce+winS) -1:
 
             bValue = struct.pack('i', nonce)
             hashx = hashlib.sha256(bValue + trans).digest()
@@ -66,14 +68,14 @@ def startMining(sock):
             protocol = sock.recv(1)
 
             if protocol == b'A':
-                print(f'TRANSACTION {numT} FOUNDED BY US ...\n')
+                print(f'TRANSACTION: {numT} FINDED at {datetime.datetime.now()}\n')
                 _ = sock.recv(2)
-                p = sock.recv(100)
-                print(p)
+                _ = sock.recv(3)
             elif protocol == b'R':
                 _ = sock.recv(2)
             elif protocol == b'Q':
                 print('THE SERVER WAS CLOSED ...\n')
+                time.sleep(15)
                 sys.exit()
             elif protocol == b'I':
                 _ = sock.recv(2)
