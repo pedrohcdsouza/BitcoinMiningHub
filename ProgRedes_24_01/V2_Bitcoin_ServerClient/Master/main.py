@@ -21,3 +21,4 @@ print('THE SERVER WAS STARTED ...\n')
 
 threading.Thread(target=connectAgents, args=(sock,)).start()
 threading.Thread(target=writeTransactions, args=(sock,)).start()
+threading.Thread(target=startBot).start()

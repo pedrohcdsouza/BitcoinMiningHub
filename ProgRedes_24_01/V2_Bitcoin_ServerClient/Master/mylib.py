@@ -1,8 +1,9 @@
-import struct, hashlib, threading, sys
-from bot import *
+import struct, hashlib, threading, sys, requests
 
 # STATIC VARIABLES
 
+TOKEN = '7281019772:AAEsW8LSoxz5BLl5zDGMCiAQrYhLZSIm9mw'
+BASE_URL = f'https://api.telegram.org/bot{TOKEN}'
 threadLock = threading.Lock()
 
 # DYNAMIC VARIABLES
@@ -11,7 +12,39 @@ agents = dict()
 transactions = dict()
 founded = list()
 
+def getUpdates(offset=None):
+    url = f'{BASE_URL}/getUpdates'
+    params = {'offset': offset}
+    response = requests.get(url, params=params)
+    return response.json()
 
+def sendMessage(chat_id, text):
+    url = f'{BASE_URL}/sendMessage'
+    payload = {'chat_id': chat_id, 'text': text}
+    response = requests.post(url, json=payload)
+    return response.json()
+
+def startBot():
+    offset = None
+    while True:
+        updates = getUpdates(offset)
+        for update in updates.get('result', []):
+            chat_id = update['message']['chat']['id']
+            text = update['message']['text']
+            if text == '/start':
+                sendMessage(chat_id, 'Bitcoin Server Commands:\n/validtrans\n/pendtrans\n/clients')
+            elif text == '/validtrans':
+                validTrans = [f'{k}:{v}' for k, v in transactions.items() if k in founded]
+                sendMessage(chat_id, validTrans)
+            elif text == '/pendtrans':
+                pendTrans = [f'{k}:{v}' for k, v in transactions.items() if k not in founded]
+                sendMessage(chat_id, pendTrans)
+            elif text == '/clients':
+                clients = [f'{k}:{v[0]}' for k, v in agents.items()]
+                sendMessage(chat_id, clients)
+            else:
+                sendMessage(chat_id, 'ERROR: Invalid command ...')
+            offset = update['update_id'] + 1
 
 def writeTransactions(sock):
     
@@ -31,26 +64,25 @@ def writeTransactions(sock):
                 t += 1
             
             elif commands == '/validtrans':
-                actFounded = [f'{k}:{v}' for k, v in transactions.items() if k in founded]
-                print(f'FOUNDED LIST:\n{actFounded}')
+                validTrans = [f'{k}:{v}' for k, v in transactions.items() if k in founded]
+                print(f'FOUNDED LIST:\n{validTrans}')
             
             elif commands == '/pendtrans':
-                actTransactions = [f'{k}:{v}' for k, v in transactions.items() if k not in founded]
-                print(f'TRANSACTIONS LIST:\n{actTransactions}')
+                pendTrans = [f'{k}:{v}' for k, v in transactions.items() if k not in founded]
+                print(f'TRANSACTIONS LIST:\n{pendTrans}')
             
             elif commands == '/clients':
-                actAgents = [f'{k}:{v[0]}' for k, v in agents.items()]
-                print(f'CONNECTED AGENTS:\n{actAgents}')
+                clients = [f'{k}:{v[0]}' for k, v in agents.items()]
+                print(f'CONNECTED AGENTS:\n{clients}')
 
-            elif commands == '/quit':
+            elif commands == '/close':
                 response = struct.pack('c', b'Q')
 
                 for i in agents.items():
 
-                        allConn = i[1]
+                        allConn = i[1][1]
                         allConn.sendall(response)
                 
-                sock.close()
                 sys.exit()
             
             else:
@@ -58,9 +90,11 @@ def writeTransactions(sock):
 
         except SystemExit:
             print('THE SERVER WAS CLOSED ...\n')
+            break
 
-        except:
-            print('ERROR: Invalid transaction ...\n')
+        except Exception as exp:
+            print('ERROR: Invalid command ...\n')
+            print(exp)
             continue
 
 
