@@ -1,15 +1,16 @@
 import socket, sys, threading
+from mylib import *
 
 print('THE SERVER IS STARTING ...')
 
-server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 try:
 
     HOST = '127.0.0.1'
     PORT = 31471
-    server.bind((HOST,PORT))
-    server.listen(10)
+    sock.bind((HOST,PORT))
+    sock.listen(10)
 
 except:
 
@@ -18,5 +19,5 @@ except:
 
 print('THE SERVER WAS STARTED ...\n')
 
-
-
+threading.Thread(target=connectAgents, args=(sock,)).start()
+threading.Thread(target=writeTransactions, args=(sock,)).start()

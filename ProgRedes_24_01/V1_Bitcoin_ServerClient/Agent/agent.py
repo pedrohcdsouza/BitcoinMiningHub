@@ -39,7 +39,6 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as agent:
                 hashx = hashlib.sha256(bValue + trans).digest()
                 binario = ''.join(format(byte, '08b') for byte in hashx)
                 
-                # Checa se os primeiros 16 bits são zeros (equivalente a dois zeros em binário)
                 if binario[:bitsZero] == '0' * bitsZero:
 
                     response = struct.pack('!cHi', b'S', numTrans, nonce)
