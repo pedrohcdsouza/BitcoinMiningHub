@@ -1,4 +1,5 @@
 import struct, hashlib, threading, sys
+from bot import *
 
 # STATIC VARIABLES
 
@@ -20,20 +21,28 @@ def writeTransactions(sock):
 
         try:
 
-            transaction = str(input('WRITE THE TRANSACTION:\n'))
+            commands = str(input(''))
 
-            if transaction == 'print': # PRINTING STATUS
+            if commands == '/newtrans':
+                transaction = str(input('WRITE THE TRANSACTION:\n'))
+                bits = int(input('WRITE THE BITS TO BE ZERO:\n'))
 
-                actAgents = [f'{k}:{v[0]}' for k, v in agents.items()]
-                print(f'CONNECTED AGENTS:\n{actAgents}')
-                actTransactions = [f'{k}:{v}' for k, v in transactions.items() if k not in founded]
-                print(f'TRANSACTIONS LIST:\n{actTransactions}')
+                transactions[t] = [bits, transaction]
+                t += 1
+            
+            elif commands == '/validtrans':
                 actFounded = [f'{k}:{v}' for k, v in transactions.items() if k in founded]
                 print(f'FOUNDED LIST:\n{actFounded}')
-                continue
+            
+            elif commands == '/pendtrans':
+                actTransactions = [f'{k}:{v}' for k, v in transactions.items() if k not in founded]
+                print(f'TRANSACTIONS LIST:\n{actTransactions}')
+            
+            elif commands == '/clients':
+                actAgents = [f'{k}:{v[0]}' for k, v in agents.items()]
+                print(f'CONNECTED AGENTS:\n{actAgents}')
 
-            elif transaction == 'quit': # PROTOCOL - Q
-
+            elif commands == '/quit':
                 response = struct.pack('c', b'Q')
 
                 for i in agents.items():
@@ -43,11 +52,10 @@ def writeTransactions(sock):
                 
                 sock.close()
                 sys.exit()
+            
+            else:
+                print('ERROR: Invalid command ...\n')
 
-            bits = int(input('WRITE THE BITS TO BE ZERO:\n'))
-            transactions[t] = [bits, transaction]
-
-            t += 1
         except SystemExit:
             print('THE SERVER WAS CLOSED ...\n')
 
