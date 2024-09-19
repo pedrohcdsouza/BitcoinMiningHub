@@ -16,6 +16,7 @@ def checkWork(sock):
         protocol = sock.recv(1)
 
         if protocol == b'I':
+            print('NONCE JA FOI ENCONTRADO!')
             checkwork = False
             _ = sock.recv(2)
         
@@ -49,8 +50,8 @@ def startMining(sock):
             nonce = 0
         else:
             nonce = winS
+        print(f'SEARCHING TRANS {numT}...\n\n')
         while nonce < winS*numA -1:
-            print(f'SEARCHING TRANS {numT}...\n')
             bValue = struct.pack('!I', nonce)
             hashx = hashlib.sha256(bValue + trans).digest()
             binario = ''.join(format(byte, '08b') for byte in hashx)
@@ -69,19 +70,22 @@ def startMining(sock):
 
             if protocol == b'A':
                 nowTime = datetime.datetime.now()
-                print(f'TRANS {numT}: {nonce} FINDED on {nowTime-startTime} \n')
+                print(f'TRANS {numT}\nNONCE: {nonce} ACCEPTED on {nowTime-startTime}\n\n')
                 _ = sock.recv(2)
                 _ = sock.recv(3)
             elif protocol == b'R':
+                print(f'TRANS {numT}\nNONCE: {nonce} REJECTED on {nowTime-startTime}\n\n')
                 _ = sock.recv(2)
             elif protocol == b'Q':
-                print('THE SERVER WAS CLOSED ...\n')
+                print('THE SERVER WAS CLOSED ...\n\n')
                 time.sleep(15)
                 sys.exit()
             elif protocol == b'I':
+                print('NONCE JA FOI ENCONTRADO')
                 _ = sock.recv(2)
+                print(f'')
             else:
-                print('ERROR: SOMETHING WRONG WITH SERVER/CLIENT COMMUNICATION ...\n')
+                print('ERROR: SOMETHING WRONG WITH SERVER/CLIENT COMMUNICATION ...\n\n')
                 sys.exit()
 
             checkwork = False
@@ -99,16 +103,16 @@ def startApplication(sock, name):
         protocol = sock.recv(1)
 
         if protocol == b'W':
-            print('NO TRANSACTION ...\nWAITING ...\n')
+            print('NO TRANSACTION\nWAITING ...\n\n')
             time.sleep(10)
         
         elif protocol == b'Q':
-            print('THE SERVER WAS CLOSED ...\n')
+            print('THE SERVER WAS CLOSEDn\n\n')
             sys.exit()
         
         elif protocol == b'T':
             startMining(sock)
         
         else:
-            print('ERROR: SOMETHING WRONG WITH SERVER/CLIENT COMMUNICATION ...\n')
+            print('ERROR: SOMETHING WRONG WITH SERVER/CLIENT COMMUNICATION\n\n')
             sys.exit()

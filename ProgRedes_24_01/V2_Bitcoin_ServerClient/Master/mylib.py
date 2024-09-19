@@ -9,6 +9,7 @@ threadLock = threading.Lock()
 agents = dict()
 transactions = dict()
 founded = dict()
+requestNumber = 0
 
 # Functions to connect the telegram BOT
 
@@ -42,7 +43,7 @@ def startBot():
                     sendMessage(chat_id, f'PEND TRANS:\n{pendTrans}')
                 elif text == '/clients':
                     clients = [f'{k}: {v[0]}' for k,v in agents]
-                    sendMessage(chat_id, f'CLIENTS:')
+                    sendMessage(chat_id, f'CLIENTS: \n{clients}')
                 else:
                     sendMessage(chat_id, 'ERROR: Invalid command ...')
                 offset = update['update_id'] + 1
@@ -127,21 +128,24 @@ def hearAgents(conn, addr):
             name = rawName[0].split(b'\x00')
             name = name[0].decode('utf-8')
             agents[addr] = [name,conn]
+            print(f'TRANSATION REQUESTED by {name}\n\n')
 
             if len(transactions) == 0 or len(transactions) == len(founded): # PROTOCOL - W
                 response = struct.pack('c', b'W')
                 conn.sendall(response)
           
             else: # PROTOCOL - T
-
+                
                 for k,i in transactions.items():
 
                     if k not in founded:
 
                         # Separating the Protocol T datas
+                        
+                        global requestNumber
 
                         numT = k
-                        numA = len(agents)
+                        numA = requestNumber
                         winS = 1000000
                         bits = i[0]
                         size = len(i[1])
@@ -152,11 +156,15 @@ def hearAgents(conn, addr):
 
                         response = struct.pack(f'!cHHIBI{size}s', b'T',numT,numA,winS,bits,size,tran)
                         conn.sendall(response)
+                        print(f'TRANSATION {numT} SENDED to {name}\n\n') # PRINT PROTOCOL T
+                        requestNumber += 1
                         break
 
         elif protocol == b'S': # PROTOCOL - S
             
             with threadLock:
+                
+                print(f'TRANSATION {numT} FOUNDED by {name}\nNONCE: {nonce}\n\n')
 
                 data = conn.recv(6)
                 while len(data) != 6:
@@ -177,7 +185,7 @@ def hearAgents(conn, addr):
                     founded[numT] = [(addr,name),nonce]
                     response = struct.pack('!cH', b'A',numT)
                     conn.sendall(response)
-                    print(f'TRANS {numT}: {nonce} by {addr}:{name}')
+                    print(f'TRANSATION {numT} ACCEPTED to {name}\nNONCE: {nonce}\n\n')
 
                     response = struct.pack('!cH', b'I',numT)
 
@@ -187,23 +195,24 @@ def hearAgents(conn, addr):
                 
                 else: # PROTOCOL - R
 
+                    print(f'TRANSATION {numT} REJECTED to {name}\nNONCE: {nonce}\n\n')
                     response = struct.pack('!cH', b'R', numT)
 
 def connectAgents(sock):
     while True:
         
-        try:
-            conn, addr = sock.accept()
-            agents[addr] = ['',conn]
-            hearAgents(conn, addr)
+        # try:
+        conn, addr = sock.accept()
+        agents[addr] = ['',conn]
+        hearAgents(conn, addr)
 
         # When the client disconnects or is forcibly disconnected, it removes the agent from the variable
         
-        except ConnectionResetError:
-            del agents[addr]
-            continue
+        # except ConnectionResetError:
+        #     del agents[addr]
+        #     continue
             
-        except:
-            del agents[addr]
-            conn.close()
-            continue
+        # except:
+        #     del agents[addr]
+        #     conn.close()
+        #     continue
