@@ -35,14 +35,14 @@ def startBot():
                 if text == '/start':
                     sendMessage(chat_id, 'Bitcoin Server Commands:\n/validtrans\n/pendtrans\n/clients')
                 elif text == '/validtrans':
-                    validTrans = [f'{k}:{v}' for k, v in transactions.items() if k in founded]
-                    sendMessage(chat_id, validTrans)
+                    validTrans = [f'{k}: {v[1]} by {v[0]}\n' for k,v in founded.items()]
+                    sendMessage(chat_id, f'VALID TRANS:\n{validTrans}')
                 elif text == '/pendtrans':
-                    pendTrans = [f'{k}:{v}' for k, v in transactions.items() if k not in founded]
-                    sendMessage(chat_id, pendTrans)
+                    pendTrans = [f'{k}: {v[1]}\n' for k, v in transactions.items() if k not in founded.keys()]
+                    sendMessage(chat_id, f'PEND TRANS:\n{pendTrans}')
                 elif text == '/clients':
-                    clients = [f'{k}:{v[0]}' for k, v in agents.items()]
-                    sendMessage(chat_id, clients)
+                    clients = [f'{k}: {v[0]}\n' for k,v in agents]
+                    sendMessage(chat_id, f'CLIENTS:\n{clients}')
                 else:
                     sendMessage(chat_id, 'ERROR: Invalid command ...')
                 offset = update['update_id'] + 1
@@ -57,60 +57,60 @@ def writeTransactions(sock):
 
     while True:
 
-        try:
+        # try:
 
-            commands = str(input('')) 
+        commands = str(input('')) 
 
-            # Handling each command
+        # Handling each command
 
-            if commands == '/newtrans':
+        if commands == '/newtrans':
 
-                transaction = str(input('WRITE THE TRANSACTION:\n'))
-                bits = int(input('WRITE THE BITS TO BE ZERO:\n'))
-                transactions[t] = [bits, transaction]
-                t += 1
+            transaction = str(input('WRITE THE TRANSACTION:\n'))
+            bits = int(input('WRITE THE BITS TO BE ZERO:\n'))
+            transactions[t] = [bits, transaction]
+            t += 1
+        
+        elif commands == '/validtrans':
+
+            validTrans = [f'{k}: {v[1]} by {v[0]}\n' for k,v in founded.items()]
+            print(f'VALID TRANS: {validTrans}')
+        
+        elif commands == '/pendtrans':
+
+            pendTrans = [f'{k}: {v[1]}\n' for k, v in transactions.items() if k not in founded.keys()]
+            print(f'PEND TRANS:\n{pendTrans}')
+        
+        elif commands == '/clients':
+
+            clients = [f'{k}: {v[0]}\n' for k,v in agents.items()]
+            print(f'CLIENTS:\n{clients}')
+
+        elif commands == '/close':
+
+            response = struct.pack('c', b'Q')
+            for i in agents.items():
+                    allConn = i[1][1] # Getting the "conn" of all Agents
+                    allConn.sendall(response) # Sending protocol Q
+            sys.exit()
             
-            elif commands == '/validtrans':
+        #     else:
 
-                validTrans = [f'{k}:{transactions[k][1]} - {v[0]}:{v[1]}\n' for k,v in founded.items()]
-                print(f'FOUNDED LIST:\n{validTrans}')
-            
-            elif commands == '/pendtrans':
+        #         print('ERROR: Invalid command ...\n')
 
-                pendTrans = [f'{k}:{v}' for k, v in transactions.items() if k not in founded]
-                print(f'TRANSACTIONS LIST:\n{pendTrans}')
-            
-            elif commands == '/clients':
+        # except SystemExit: # Headling the server close function
 
-                clients = [f'{k}:{v[0]}' for k, v in agents.items()]
-                print(f'CONNECTED AGENTS:\n{clients}')
+        #     print('THE SERVER WAS CLOSED ...\n')
+        #     break
 
-            elif commands == '/close':
+        # except Exception as exp:
 
-                response = struct.pack('c', b'Q')
-                for i in agents.items():
-                        allConn = i[1][1] # Getting the "conn" of all Agents
-                        allConn.sendall(response) # Sending protocol Q
-                sys.exit()
-            
-            else:
-
-                print('ERROR: Invalid command ...\n')
-
-        except SystemExit: # Headling the server close function
-
-            print('THE SERVER WAS CLOSED ...\n')
-            break
-
-        except Exception as exp:
-
-            print('ERROR: Invalid command ...\n')
-            print(exp)
-            continue
+        #     print('ERROR: Invalid command ...\n')
+        #     print(exp)
+        #     continue
 
 
 
-def hearAgents(conn, ip):
+def hearAgents(conn, addr):
 
     while True:
 
@@ -120,11 +120,13 @@ def hearAgents(conn, ip):
         
         if protocol == b'G': # PROTOCOL - G
 
-            name = conn.recv(10)
-            while len(name) != 10:
-                name += conn.recv(1)
-            name = struct.unpack('!10s', name)
-            agents[ip] = [name,conn]
+            rawName = conn.recv(10)
+            while len(rawName) != 10:
+                rawName += conn.recv(1)
+            rawName = struct.unpack('!10s', rawName)
+            name = rawName[0].split(b'\x00')
+            name = name[0].decode('utf-8')
+            agents[addr] = [name,conn]
 
             if len(transactions) == 0 or len(transactions) == len(founded): # PROTOCOL - W
                 response = struct.pack('c', b'W')
@@ -166,13 +168,13 @@ def hearAgents(conn, ip):
                 if isinstance(trans, str): 
                     trans = trans.encode('utf-8')
                 
-                nonceValue = struct.pack('I', nonce)
+                nonceValue = struct.pack('!I', nonce)
                 transHash = hashlib.sha256(nonceValue + trans).digest()
                 transBin = ''.join(format(byte, '08b') for byte in transHash)
 
                 if transBin[:bits] == '0' * bits: # PROTOCOL - A and I
 
-                    founded[numT] = [ip,name]
+                    founded[numT] = [(addr,name),nonce]
                     response = struct.pack('!cH', b'A',numT)
                     conn.sendall(response)
 
@@ -187,23 +189,20 @@ def hearAgents(conn, ip):
                     response = struct.pack('!cH', b'R', numT)
 
 def connectAgents(sock):
-
     while True:
         
         try:
-
             conn, addr = sock.accept()
-            ip, _ = addr
-            agents[ip] = ['',conn]
-            hearAgents(conn, ip)
+            agents[addr] = ['',conn]
+            hearAgents(conn, addr)
 
         # When the client disconnects or is forcibly disconnected, it removes the agent from the variable
-
+        
         except ConnectionResetError:
-            del agents[ip]
+            del agents[addr]
             continue
             
         except:
-            del agents[ip]
+            del agents[addr]
             conn.close()
             continue

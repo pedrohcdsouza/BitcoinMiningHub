@@ -21,6 +21,7 @@ except:
 
 print('THE SERVER WAS STARTED ...\n')
 
-threading.Thread(target=connectAgents, args=(sock,)).start() # Thread to Connect all agents and hear them
 threading.Thread(target=writeTransactions, args=(sock,)).start() # Thread to user Write the transactions
 threading.Thread(target=startBot).start() # Thread to Connect the Telegram BOT
+while True:
+    threading.Thread(target=connectAgents, args=(sock,)).start() # Thread to Connect all agents and hear them

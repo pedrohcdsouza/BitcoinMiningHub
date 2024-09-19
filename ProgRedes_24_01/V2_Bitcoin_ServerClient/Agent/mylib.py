@@ -51,7 +51,7 @@ def startMining(sock):
 
         while nonce < (nonce+winS) -1:
 
-            bValue = struct.pack('i', nonce)
+            bValue = struct.pack('!I', nonce)
             hashx = hashlib.sha256(bValue + trans).digest()
             binario = ''.join(format(byte, '08b') for byte in hashx)
             
