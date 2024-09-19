@@ -163,13 +163,12 @@ def hearAgents(conn, addr):
         elif protocol == b'S': # PROTOCOL - S
             
             with threadLock:
-                
-                print(f'TRANSATION {numT} FOUNDED by {name}\nNONCE: {nonce}\n\n')
 
                 data = conn.recv(6)
                 while len(data) != 6:
                     data += conn.recv(1)
                 numT, nonce = struct.unpack('!HI', data)
+                print(f'TRANSATION {numT} FOUNDED by {name}\nNONCE: {nonce}\n\n')
 
                 bits, trans = transactions[numT]
 

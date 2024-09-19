@@ -52,6 +52,7 @@ def startMining(sock):
             nonce = winS
         print(f'SEARCHING TRANS {numT}...\n\n')
         while nonce < winS*numA -1:
+            print(nonce)
             bValue = struct.pack('!I', nonce)
             hashx = hashlib.sha256(bValue + trans).digest()
             binario = ''.join(format(byte, '08b') for byte in hashx)
