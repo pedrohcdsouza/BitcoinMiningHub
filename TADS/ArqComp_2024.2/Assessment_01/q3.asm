@@ -15,9 +15,7 @@
 		
 		# User input
 		
-		add $9, $0, $2 # Saving result in register '9'
-		
-		mul $4, $8, $9 # Multipyling the inputs
+		mul $4, $8, $2 # Multipyling the inputs
 		
 		addi $2, $0, 1
 		syscall
