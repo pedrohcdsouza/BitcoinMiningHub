@@ -4,11 +4,13 @@
 	main:
 		addi $2, $0, 5
 		syscall
+		
 		# Catching the user input
 		
 		mul $4, $2, $2 # Adding the ² of user input on register '4'
 		
 		addi $2, $0, 1
 		syscall
+		
 		# Priting the result
 		
