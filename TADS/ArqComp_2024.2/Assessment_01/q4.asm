@@ -3,25 +3,31 @@
 .text
 	main:
 		
+		# Input
+		
 		addi $2, $0, 5
 		syscall
-		
-		# Input
 		
 		add $8, $0, $2 # Saving result in register '8'
 		
+		# Input
+		
 		addi $2, $0, 5
 		syscall
 		
-		# Input
-		
-	 	mul $9, $8, $2 # Multiplying the 2 grades
+	 	add $9, $8, $2 # Adding the 2 grades
 	 	
-	 	div $4, $9, $2 # Dividing the result by 2
+	 	addi $10, $0, 2
+	 	div $9, $10 # Dividing the result
+	 	
+	 	addi $4, $0, $9
+	 	
+	 	# Print
 	 	
 	 	addi $2, $0, 1
 	 	syscall
 	 	
-	 	# Print
+	 	# End service
 	 	
-	 	
+	 	addi $2, $0, 10
+	 	syscall
