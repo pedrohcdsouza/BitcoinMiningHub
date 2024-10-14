@@ -14,3 +14,5 @@
 		
 		# Priting the result
 		
+		addi $2, $0, 10 # Ending the service
+		syscall
