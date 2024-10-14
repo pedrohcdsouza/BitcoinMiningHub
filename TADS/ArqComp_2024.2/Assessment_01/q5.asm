@@ -28,6 +28,10 @@
 		addi $2, $0, 1
 		syscall
 		
+		# End service
+		
+		addi $2, $0, 10
+		syscall
 		
 		
 		

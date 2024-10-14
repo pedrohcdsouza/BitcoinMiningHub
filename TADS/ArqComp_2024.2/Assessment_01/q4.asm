@@ -1,4 +1,4 @@
-# Q4) FaÃ§a um programa para ler duas notas de um aluno do IFRN em um curso semestral. E apresentar a mÃ©dia.
+# Q4) Faça um programa para ler duas notas de um aluno do IFRN em um curso semestral. E apresentar a média.
 
 .text
 	main:
