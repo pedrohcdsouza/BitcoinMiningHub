@@ -10,11 +10,5 @@
 		addi $2, $0, 1 # Adding the value '1' to register 2. (PRINT)
 		syscall
 		
-		
-		
-		
-		
-		
-		
-		
-		
+		addi $2, $0, 10 # Ending the service
+		syscall
