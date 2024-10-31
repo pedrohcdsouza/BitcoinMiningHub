@@ -2,14 +2,15 @@
 
 int main(){
 
-    int arrayN[10] = {1,2,3,4,5,6,7,8,9}; // INPUT
+    int arrayN[10] = {10,22,33,4,51,66,74,81,9}; // INPUT
     int x = 0;                            // OUTPUT
-
     int y = 0;
-
-    for (int i; i < 10; i++){
-
-        if ()
-
+    
+    for (int i = 0; i < 10; i++){
+        if(y-arrayN[i] > x){
+            x = y-arrayN[i];
+        }
+        y = arrayN[i];
     }
+    std::cout << x;
 }
