@@ -1,7 +1,7 @@
 # PT-BR:
-**Linguagem de programação**
-Processo de aprendizagem de linguagem de programação (python). Primeiros passos!
+Este diretório contém meus primeiros passos com programação. 
+Aqui, você encontrará os projetos e exercícios iniciais que estou desenvolvendo enquanto aprendo as bases da programação.
 
 # EN-US:
-**Programming language**
-Process of learning a programming language (python). First steps!
+This directory contains my first steps in programming. 
+Here, you will find the initial projects and exercises I am developing as I learn the fundamentals of programming.
