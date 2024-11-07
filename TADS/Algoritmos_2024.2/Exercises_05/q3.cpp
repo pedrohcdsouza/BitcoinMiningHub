@@ -2,11 +2,11 @@
 
 int main(){
 
-    int arrayN[10] = {10,22,33,4,51,66,74,81,9}; // INPUT
-    int x = 0;                            // OUTPUT
+    int arrayN[11] = {7,17,9,1,2,1,5,11,31,1,5}; // INPUT
+    int x = 0;                                   // OUTPUT
     int y = 0;
     
-    for (int i = 0; i < 10; i++){
+    for (int i = 0; i < 11; i++){
         if(y-arrayN[i] > x){
             x = y-arrayN[i];
         }
