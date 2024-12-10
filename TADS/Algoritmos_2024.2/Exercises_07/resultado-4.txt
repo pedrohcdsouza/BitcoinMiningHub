@@ -1,0 +1,50 @@
+Arquivo: testes\teste-01.txt
+Quantidade de números lidos: 10001
+Capacidade final do vetor: 20000
+Tempo de processamento: 4560 microseconds(s)
+
+Arquivo: testes\teste-02.txt
+Quantidade de números lidos: 20001
+Capacidade final do vetor: 40000
+Tempo de processamento: 1660 microseconds(s)
+
+Arquivo: testes\teste-03.txt
+Quantidade de números lidos: 30001
+Capacidade final do vetor: 40000
+Tempo de processamento: 17547 microseconds(s)
+
+Arquivo: testes\teste-04.txt
+Quantidade de números lidos: 40001
+Capacidade final do vetor: 60000
+Tempo de processamento: 16414 microseconds(s)
+
+Arquivo: testes\teste-05.txt
+Quantidade de números lidos: 50001
+Capacidade final do vetor: 60000
+Tempo de processamento: 16250 microseconds(s)
+
+Arquivo: testes\teste-06.txt
+Quantidade de números lidos: 60001
+Capacidade final do vetor: 80000
+Tempo de processamento: 31331 microseconds(s)
+
+Arquivo: testes\teste-07.txt
+Quantidade de números lidos: 70001
+Capacidade final do vetor: 80000
+Tempo de processamento: 33211 microseconds(s)
+
+Arquivo: testes\teste-08.txt
+Quantidade de números lidos: 80001
+Capacidade final do vetor: 100000
+Tempo de processamento: 33363 microseconds(s)
+
+Arquivo: testes\teste-09.txt
+Quantidade de números lidos: 90001
+Capacidade final do vetor: 100000
+Tempo de processamento: 49921 microseconds(s)
+
+Arquivo: testes\teste-10.txt
+Quantidade de números lidos: 100001
+Capacidade final do vetor: 120000
+Tempo de processamento: 42887 microseconds(s)
+

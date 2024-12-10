@@ -1,4 +1,7 @@
 #include <iostream>
+#include <fstream>
+#include <vector>
+#include <string>
 #include <chrono>
 
 int * increase_capacity(int * data, int &capacity, int &size){
