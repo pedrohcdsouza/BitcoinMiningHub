@@ -1,0 +1,101 @@
+
+
+body{
+    margin: 0;
+    padding: 0;
+}
+
+header{
+    background-image: url(../static/imgs/bach-header-1.png);
+    background-size: cover;
+    background-position: center bottom;
+}
+
+header picture{
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+    gap: 12px;
+}
+
+header h2{
+    color: white;
+    font-family: "Mr Dafoe", serif;
+    font-size: 32px;
+}
+
+header img{
+    width: 40px;
+    height: 40px;
+}
+
+nav{
+    display: inline-block;
+    width: 200px;
+    height: 1000px;
+    background-color: #cedfff;
+    text-align: top;
+    vertical-align: top;
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    height: 40px;
+}
+
+nav ul li:hover{
+    background-color:#3871bd;
+}
+
+.act-page{
+    background-color:#3871bd;
+}
+
+nav a{
+    text-decoration: none;
+    font: bold;
+    font-size: medium;
+    color: white;
+    display: block;
+    line-height: 40px;
+    background-image: url(../static/imgs/seta-menu.png);
+    background-repeat: no-repeat;
+    background-position: left center;
+    text-indent: 20px;
+}
+
+main{
+    display: inline-block;
+}
+
+main h2{
+    width: 1500px;
+    color: #3871bd;
+    border-bottom: 2px #3871bd solid;
+}
+
+main p{
+    color: #3871bd;
+}
+
+main img{
+    width: 500px;
+    border: 1px black solid;
+}
+
+main img:hover{
+    width: 600px;
+}
+
+.one-image{
+    text-align: center;
+}
+
+.multi-image{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 20px; /* lembrar de que isto não está funcionando! */
+}
